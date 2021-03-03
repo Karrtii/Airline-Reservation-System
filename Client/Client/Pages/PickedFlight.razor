@@ -1,0 +1,251 @@
+﻿@page "/pickedflight"
+@using Microsoft.AspNetCore.WebUtilities @*for QueryHelpers*@
+@inject NavigationManager navigationManager
+@inject IFlightInfoService flightInfoService
+@inject IAirportService airportService
+@inject IBookingService bookingService
+@inject ITicketService ticketService
+@inject CustomDataProtection customDataProtection
+@inject SecurityService securityService
+@attribute [Authorize]
+@namespace AddPassengerService
+@using Client.Data
+@using Client.Model
+@using Client.Security
+
+<div class="container-fluid flight-overview">
+    <div class="row justify-content-center align-items-center ">
+
+        <div class="col-12 col-md-4 text-md-right text-center">
+            @if (from == null)
+            {
+                <h2 class="text-white">
+                    Loading...
+                </h2>
+
+            }
+            else
+            {
+                <h2 class="text-white ">
+                    @{string a = from.city;}
+                    @a
+                </h2>
+
+                <p>@{string b = from.country;} @b</p>
+            }
+        </div>
+        <div class="col-12 col-md-1 text-center">
+            <i class="fas fa-exchange-alt" style="font-size:40px"></i>
+
+
+        </div>
+        <div class="col-12 col-md-4 text-md-left text-center">
+            @if (whereTo == null)
+            {
+                <h2 class="text-white">
+                    Loading...
+                </h2>
+            }
+            else
+            {
+                <h2 class="text-white">
+                    @{string a = whereTo.city;}
+                    @a
+                </h2>
+
+                <p>
+                    @{string b = whereTo.country;} @b
+
+                </p>
+            }
+
+        </div>
+
+
+
+
+    </div>
+    <div class="row">
+        <div class="col-12 text-center">
+
+            <ul>
+                @if (numOfAdults == 1)
+                {
+                    <li class="pr-1">
+                        <i class="fas fa-male "></i>
+
+                    </li>
+                    <li> <strong>1 Adult</strong></li>
+                }
+                else
+                {
+                    <li class="pr-1">
+                        <i class="fas fa-user-friends"></i>
+
+                    </li>
+                    <li><strong>@numOfAdults Adults</strong></li>
+                }
+                @if (numOfChildren == 1)
+                {
+                    <li class="pr-1">
+                        <i class="fas fa-child" style="font-size:15px;"></i>
+
+                    </li>
+                    <li> <strong>1 Child</strong></li>
+                }
+                else if (numOfChildren == 0)
+                {
+
+                }
+                else
+                {
+                    <li>
+                        <i class="fas fa-child pr-1" style="font-size:15px;"></i>
+
+                    </li>
+                    <li><strong>>@numOfChildren Children</strong></li>
+                }
+
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid p-5">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            @for (int i = 0; i < (numOfAdults + numOfChildren); i++)
+            {
+                <AddPassenger @bind-newPassenger="passengers[i]" />
+            }
+        </div>
+        <div class="col-12 col-md-4 p-5 position-relative ">
+            <div class="picked-fixed">
+                <p>After you provided all informations, you can click on button below to continue</p>
+                <button form="myid" @onclick="Submit" class="btn btn-primary btn-rounded">Continue </button>
+                <div class="row">
+                    <div class="col-12">
+                        <div style="color:red" class="font-weight-bold">@errorMessage</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int flightID;
+    private int numOfAdults;
+    private int numOfChildren;
+    private int price;
+    private FlightInfo flightInfo;
+    private Airport from;
+    private Airport whereTo;
+    private List<Passenger> passengers = new List<Passenger>();
+    private bool isReturning;
+    private Passenger passenger = new Passenger();
+    private string errorMessage;
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        @for (int i = 0; i < 12; i++)
+        {
+            passengers.Add(new Passenger(0, DateTime.Now, null, null, DateTime.Now, "A", null));
+        }
+
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue(securityService.flightIDPickedFlight, out var flightid))
+        {
+            flightID = Convert.ToInt32(customDataProtection.Decode(flightid.First()));
+        }
+
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue(securityService.adultPickedFlight, out var adults))
+        {
+            numOfAdults = Convert.ToInt32(customDataProtection.Decode(adults.First()));
+        }
+
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue(securityService.childrenPickedFlight, out var children))
+        {
+            numOfChildren = Convert.ToInt32(customDataProtection.Decode(children.First()));
+        }
+
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue(securityService.pricePickedFlight, out var priceparam))
+        {
+            price = Convert.ToInt32(customDataProtection.Decode(priceparam.First()));
+        }
+
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue(securityService.returningPickedFlight, out var returning))
+        {
+            isReturning = Convert.ToBoolean(customDataProtection.Decode(returning.First()));
+        }
+
+        flightInfo = await flightInfoService.getFlightInfo(flightID);
+        from = await airportService.getAirportByIATA(flightInfo.departure.fromWhere);
+        whereTo = await airportService.getAirportByIATA(flightInfo.arrival.fromWhere);
+        bookingService.setFlightID(flightID);
+        bookingService.setAlreadyReservedSeats(await ticketService.getTickets(flightID));
+    }
+
+    private void Submit()
+    {
+        if (CheckSubmit())
+        {
+            SaveInformation();
+        }
+        else
+        {
+            errorMessage = "Please enter valid information in all passenger forms";
+        }
+    }
+    private bool CheckSubmit()
+    {
+        for (int i = 0; i < (numOfChildren + numOfAdults); i++)
+        {
+            if (CheckPassenger(passengers[i]))
+            {
+                continue;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private bool CheckPassenger(Passenger passenger)
+    {
+        if (DateTime.Compare(passenger.dateOfBirth, DateTime.Now) > 0 || DateTime.Compare(passenger.dateOfBirth, new DateTime(1900, 1, 1)) < 0 ||
+        passenger.gender.Equals("A") || passenger.firstname == null || passenger.lastname == null ||
+        passenger.nationality == null || (passenger.passportNumber < 1000000000 || passenger.passportNumber > int.MaxValue) ||
+        DateTime.Compare(passenger.passportExpirationDate, DateTime.Now) < 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private void SaveInformation()
+    {
+        int startErasing = 0;
+        for (int i = 0; i < 12; i++)
+        {
+            if (passengers[i].gender.Equals("A"))
+            {
+                startErasing = i;
+                break;
+            }
+        }
+        passengers.RemoveRange(startErasing - 1, 12 - (startErasing - 1));
+        bookingService.SavePassengerData(passengers, price);
+        bookingService.setReturn(isReturning);
+        bookingService.setAdultsChildren(numOfAdults, numOfChildren);
+        navigationManager.NavigateTo("/luggage");
+    }
+}

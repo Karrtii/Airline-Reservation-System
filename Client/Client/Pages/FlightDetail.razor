@@ -1,0 +1,162 @@
+﻿@page "/flightdetail"
+@using Microsoft.AspNetCore.WebUtilities @*for QueryHelpers*@
+@using Client.Model
+@using Client.Data
+@using System.Net
+@using Client.Security
+@inject NavigationManager navigationManager
+@inject IFlightInfoService flightInfoService
+@inject IAirportService airportService
+@inject IPassengerService passengerService
+@inject SecurityService securityService
+@inject ITicketService ticketService
+@inject CustomDataProtection customDataProtection
+@attribute [Authorize]
+
+@if (flightInfo == null || from == null || whereTo == null || passenger == null || ticket == null)
+{
+    <p>Loading....</p>
+}
+else
+{
+    <div class="container pt-3">
+        <div class="row justify-content-center">
+            <div class="detail-card">
+                <div class="first-half">
+                    <h1>Blazing flights</h1>
+                    <div class="flight-row">
+
+                        <span>Flight @flightID </span>
+                        <span>/// </span>
+                        <span> @flightInfo.departure.departureTime.ToString("dddd, dd MMMM yyyy")</span>
+                        <i class="fas fa-circle"></i>
+
+
+
+                    </div>
+
+                    <p class="mb-0">@passenger.firstname @passenger.lastname</p>
+
+                    <small>Passenger</small>
+                    <div class="row-row">
+                        <p class="mb-0 mt-2">@flightInfo.departure.departureTime.ToString("h: mm tt")</p>
+                        <p class="mb-0 mt-2">@flightInfo.arrival.arrivalTime.ToString("h: mm tt")</p>
+                        <small>DEPARTURE TIME</small>
+                        <small>LANDING TIME</small>
+
+                    </div>
+
+                    <div class="row-row-2">
+                        <p class="mb-0 mt-2">One way</p>
+                        <p class="mb-0 mt-2">15kg</p>
+                        <p class="mb-0 mt-2">@calculateSeat(ticket.seat)</p>
+                        <small class="span">FLIGHT TYPE</small>
+                        <small>LUGGAGE</small>
+                        <small>SEAT</small>
+
+                    </div>
+
+
+
+                </div>
+
+                <div class="second-half">
+                    <div class="left-side">
+                        <i class="fas fa-square"></i>
+                        <i class="fas fa-caret-right"></i>
+
+                        <h2>@flightInfo.departure.fromWhere</h2>
+                        <p>@from.city, @from.country</p>
+                        <div class="inner-second-half">
+                            <i class="fas fa-caret-left"></i>
+                            <i class="fas fa-grip-lines"></i>
+
+
+                            <i class="fas fa-chevron-down"></i>
+                            <h2>@flightInfo.arrival.fromWhere</h2>
+                            <p>@whereTo.city, @whereTo.country</p>
+                        </div>
+                    </div>
+
+                    <div class="right-side">
+                        <img src="/css/Assets/qr-code.svg" alt="qr-code">
+                    </div>
+
+                    <div class="row-2">
+                        <i class="fas fa-arrow-circle-left" style="font-size:35px; cursor:pointer;" @onclick="goBack"></i>
+                        <div class="booking-form p-0">
+                            <button class="submit-btn" @onclick="CancelFlight">Cancel flight</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private int flightID;
+    private int passengerNum;
+    private FlightInfo flightInfo;
+    private Passenger passenger;
+    private Airport from;
+    private Airport whereTo;
+    private Ticket ticket;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue(securityService.passengerPassportFlightDetails, out var passengerNum))
+        {
+            this.passengerNum = Convert.ToInt32(customDataProtection.Decode(passengerNum.First()));
+        }
+
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue(securityService.flightIDFlightDetails, out var flightid))
+        {
+            flightID = Convert.ToInt32(customDataProtection.Decode(flightid.First()));
+        }
+
+        flightInfo = await flightInfoService.getFlightInfo(flightID);
+        from = await airportService.getAirportByIATA(flightInfo.departure.fromWhere);
+        whereTo = await airportService.getAirportByIATA(flightInfo.arrival.fromWhere);
+        passenger = await passengerService.getPassenger(this.passengerNum);
+        ticket = await ticketService.getTicket(this.passengerNum, flightID);
+    }
+    private void goBack()
+    {
+        navigationManager.NavigateTo("/viewmyflights");
+    }
+    private string calculateSeat(int seatnumber)
+    {
+        int row = seatnumber / 6;
+        string result = "";
+        switch (seatnumber % 6)
+        {
+            case 0:
+                result = row + "F";
+                break;
+            case 1:
+                result = row + "E";
+                break;
+            case 2:
+                result = row + "D";
+                break;
+            case 3:
+                result = row + "C";
+                break;
+            case 4:
+                result = row + "B";
+                break;
+            case 5:
+                result = row + "A";
+                break;
+        }
+        return result;
+    }
+    private async Task CancelFlight()
+    {
+        await ticketService.cancelFlight(this.passengerNum, flightID);
+        navigationManager.NavigateTo("/viewmyflights");
+    }
+}

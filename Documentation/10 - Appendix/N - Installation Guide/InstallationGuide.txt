@@ -1,0 +1,14 @@
+1) Set up the database in postgres by giving the database the name "Airline" and the schema to "airline"
+2) In the "airline" schema, copy and paste sql code found in Appendix H, under the folder Database and execute
+3) Set up the project folder found under Appendix I
+4) Open Persistence folder in java and head to PersistenceModel found in Model folder
+5) Change username and password, so that it matches yours in postgresql
+6) Open client package in Visual Studio, run terminal and write: dotnet dev-certs https --trust
+7) Then write:dotnet dev-certs https -ep "mypfxfile.pfx" -p password DONT FORGET to change filename and password
+8) After that: keytool -importkeystore -srckeystore mypfxfile.pfx -srcstoretype pkcs12 -srcstorepass password -deststoretype pkcs12 -destkeystore C:\Users\USERNAME\.keystore -deststorepass password -destkeypass password
+9) Then copy the generated .keystore file (usualy located C:/users/USERNAME) to the middleware package
+10) In the middleware source/main/resources open application.properties and change your password and alias(which can will be found in terminal, when you inserted commands 7 and 8)
+11) Open and start persistence in java
+12) Open and start middleware in java
+13) Start and run the client
+

@@ -1,0 +1,4 @@
+Supreme being Karrtii - Login, register, book flights, reserve seat
+nico - view booked flights, view previous, create flights, cancel flights
+patrik - view information about customers, edit flight information, delay flights
+jan - view available flights, get notifications, cancel booked flights, edit user info

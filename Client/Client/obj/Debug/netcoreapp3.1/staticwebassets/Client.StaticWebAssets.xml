@@ -1,0 +1,5 @@
+﻿<StaticWebAssets Version="1.0">
+  <ContentRoot BasePath="_content/Blazored.Toast" Path="C:\Users\karrt\.nuget\packages\blazored.toast\3.1.2\build\..\staticwebassets\" />
+  <ContentRoot BasePath="_content/Blazored.Typeahead" Path="C:\Users\karrt\.nuget\packages\blazored.typeahead\4.4.1\build\..\staticwebassets\" />
+  <ContentRoot BasePath="_content/Radzen.Blazor" Path="C:\Users\karrt\.nuget\packages\radzen.blazor\2.17.11\build\..\staticwebassets\" />
+</StaticWebAssets>

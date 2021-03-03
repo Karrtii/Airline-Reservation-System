@@ -1,0 +1,401 @@
+﻿@page "/overview"
+@using Client.Data;
+@using Client.Model;
+@using System.ComponentModel.DataAnnotations;
+@inject IFlightInfoService flightInfoService
+@inject IBookingService bookingService
+@inject IPassengerService passengerService
+@inject ITicketService ticketService
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+
+<div class="container-fluid">
+    <div class="row p-3 justify-content-center">
+        @if (flightInfo == null)
+        {
+            <p>Loading...</p>
+        }
+        else
+        {
+            <div class="col-12 col-md-5  p-5 ">
+                <h2 class="text-center border-bottom p-3">Flight overview</h2>
+                <h3 class="my-3">Flights</h3>
+                <h5>@flightInfo.departure.fromWhere - <strong>@flightInfo.arrival.fromWhere</strong></h5>
+                <div class="row ml-0 mb-2 justify-content-between my-3">
+
+                    <span>@flightInfo.departure.departureTime.ToString("dddd, dd MMMM yyyy")</span>
+                    <span class="mx-2">@flightInfo.departure.departureTime.ToString("h: mm tt")</span>
+                    <span>-</span>
+                    <span class="mx-2">@flightInfo.arrival.arrivalTime.ToString("h: mm tt")</span>
+                    <span>-</span>
+                    <span class="mx-2">FR 1872</span>
+                </div>
+                <div class="row ml-2 justify-content-between">
+                    @if (numOfAdults != 0 && numOfChildren == 0)
+                    {
+                        <span class="mr-5">@numOfAdults x Adult</span>
+                    }
+                    else
+                    {
+                        <span class="mr-5">@numOfAdults x Adult</span>
+                        <span class="mr-5">@numOfChildren x Children</span>
+                    }
+                    <span> <strong>DKK 420,69</strong></span>
+                </div>
+                <div class="row py-2 ml-2 border-bottom">
+                    <small class="ml-2">
+                        @if (largeLuggage != "0x bag(Large)")
+                        {
+                            @largeLuggage
+                            <br />
+                        }
+                        @if (mediumLuggage != "0x bag(Medium)")
+                        {
+                            @mediumLuggage
+                            <br />
+                        }
+                        @if (smallLuggage != "0x bag(Small)")
+                        {
+                            @smallLuggage
+                        }
+                    </small>
+                </div>
+
+                <div class="row ml-2">
+                    <div class="d-flex flex-column">
+                        <h4>Passengers</h4>
+                        <a @onclick="CollapseOn" style="color: #0062ff; cursor:pointer;">View details</a>
+                    </div>
+
+                    <div class="w-100" hidden="@collapse" id="collapseExample">
+                        @if (passengers == null)
+                        {
+                            <p>Loading....</p>
+                        }
+                        else
+                        {
+                            @for (int i = 0; i < passengers.Count; i++)
+                            {
+                                <div class="card card-body d-flex flex-row justify-content-between w-100 my-2">
+                                    <p>@passengers[i].firstname</p>
+                                    <p>@passengers[i].lastname</p>
+                                    <p>@luggage[i] bag</p>
+                                    <p>Seat @seats[i]</p>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="row justify-content-between ml-2" style="padding-top: 20px;">
+                    <p>Total to pay:</p>
+                    <h2>DKK @totalPrice</h2>
+                </div>
+            </div>
+        }
+
+        @if (returning)
+        {
+            <div class="col-12 col-md-5  my-3">
+
+                <h5>Pakistan to <strong>Uzbekistan</strong></h5>
+
+                <div class="row ml-0 mb-2 justify-content-between my-3">
+
+                    <span>Sat 1 May</span>
+                    <span class="mx-2">10:25</span>
+                    <span>-</span>
+                    <span class="mx-2">15:00</span>
+                    <span>-</span>
+                    <span class="mx-2">FR 1872</span>
+                </div>
+                <div class="row ml-2 justify-content-between">
+                    @if (numOfAdults != 0 && numOfChildren == 0)
+                    {
+                        <span class="mr-5">@numOfAdults x Adult</span>
+                    }
+                    else
+                    {
+                        <span class="mr-5">@numOfAdults x Adult</span>
+                        <span class="mr-5">@numOfChildren x Children</span>
+                    }
+                    <span> <strong>DKK 420,69</strong></span>
+                </div>
+                <div class="row ml-2 my-2 border-bottom">
+                    <small class="ml-2">
+                        @if (largeLuggage != "0x bag(Large)")
+                        {
+                            @largeLuggage
+                        }
+                        @if (mediumLuggage != "0x bag(Medium)")
+                        {
+                            @mediumLuggage
+                        }
+                        @if (smallLuggage != "0x bag(Small)")
+                        {
+                            @smallLuggage
+                        }
+                    </small>
+                </div>
+
+                <div class="row justify-content-between ml-2" style=" border-top: 1px solid #dee2e6; padding-top: 20px;">
+                    <p>Total to pay</p>
+                    <h2>DKK @totalPrice</h2>
+                </div>
+
+            </div>
+        }
+        <div class="col-12 col-md-5 my-3 ">
+            <div class="booking-form justify-content-center">
+                <div class="row">
+                    <div class="col-12 my-3">
+                        <p style="color:white;  font-size:2rem;" class="text-center">
+                            Payment
+                        </p>
+                    </div>
+                </div>
+                <EditForm Model="creditModel" OnValidSubmit="BookFlight">
+                    <DataAnnotationsValidator />
+                    <div class="col-12">
+                        <div class="form-group">
+                            <div class="row">
+
+                                <span class="form-label">Name on card</span>
+                                <InputText @bind-Value="@creditModel.name" class="form-control" type="text" placeholder="Name on card" />
+                                <ValidationMessage For="@(() => creditModel.name)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class=" col-md-6">
+                            <div class="form-group">
+                                <span class="form-label">Card number</span>
+                                <InputNumber @bind-Value="@creditModel.creditCardNumber" class="form-control" placeholder="**** **** **** ****" />
+                                <ValidationMessage For="@(() => creditModel.creditCardNumber)" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 ">
+                            <div class="form-group">
+                                <span class="form-label">CVV</span>
+                                <InputNumber @bind-Value="@creditModel.cvv" class="form-control" type="text" placeholder="***" />
+                                <ValidationMessage For="@(() => creditModel.cvv)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mx-auto">
+                            <div class="form-group">
+                                <span class="form-label">Expiration month</span>
+                                <InputNumber @bind-Value="@creditModel.expirationMonth" type="date" class="form-control" placeholder="Expiration month" />
+                                <ValidationMessage For="@(() => creditModel.expirationMonth)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mx-auto">
+                            <div class="form-group">
+                                <span class="form-label">Expiration year</span>
+                                <InputNumber @bind-Value="@creditModel.expirationYear" type="date" class="form-control" placeholder="Expiration year" />
+                                <ValidationMessage For="@(() => creditModel.expirationYear)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div style="color:red" class="font-weight-bold"></div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-8">
+                            <div class="booking-form">
+
+                                <button type="submit" class="submit-btn"> Pay</button>
+                            </div>
+                        </div>
+                    </div>
+                </EditForm>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    private FlightInfo flightInfo;
+    private List<Ticket> luggage;
+    private List<Passenger> passengers;
+    private List<string> seats;
+    private bool returning;
+    private int numOfAdults;
+    private int numOfChildren;
+    private int totalPrice;
+    private string smallLuggage;
+    private string mediumLuggage;
+    private string largeLuggage;
+    private bool collapse = true;
+    CreditModel creditModel = new CreditModel();
+
+    protected async override Task OnInitializedAsync()
+    {
+        flightInfo = await flightInfoService.getFlightInfo(bookingService.getFlightID());
+        returning = bookingService.IsReturning();
+        numOfAdults = bookingService.getAdults();
+        numOfChildren = bookingService.getChildren();
+        passengers = bookingService.getPassengers();
+        luggage = bookingService.getLuggage();
+        seats = bookingService.getSeatInfo();
+        CalculateTotal(luggage);
+        CalculateLuggage(luggage);
+    }
+
+    private void CalculateTotal(List<Ticket> tickets)
+    {
+        foreach (Ticket t in tickets)
+        {
+            totalPrice += t.price;
+        }
+        totalPrice += bookingService.getPrice();
+    }
+
+    private void CalculateLuggage(List<Ticket> tickets)
+    {
+        int ll = 0;
+        int ml = 0;
+        int sl = 0;
+
+        foreach (Ticket t in tickets)
+        {
+            if (t.luggage.Equals("Small"))
+            {
+                sl++;
+            }
+            if (t.luggage.Equals("Medium"))
+            {
+                ml++;
+            }
+            if (t.luggage.Equals("Large"))
+            {
+                ll++;
+            }
+
+            largeLuggage = ll + "x bag(Large)";
+            mediumLuggage = ml + "x bag(Medium)";
+            smallLuggage = sl + "x bag(Small)";
+        }
+    }
+
+    private void CollapseOn()
+    {
+        collapse = false;
+    }
+
+    private async Task BookFlight()
+    {
+        List<string> passCheck = new List<string>();
+
+        for (int i = 0; i < passengers.Count; i++)
+        {
+            passCheck.Add("false");
+            passCheck[i] = await passengerService.CheckPassenger(passengers[i]);
+        }
+        if (passCheck.Contains("false"))
+        {
+            //Error
+            NavigationManager.NavigateTo("/errorPage");
+        }
+        else
+        {
+            //Register passenger
+            foreach (Passenger p in passengers)
+            {
+                await passengerService.registerPassenger(p, bookingService.getUsername());
+            }
+
+            //Check each seat availability
+
+            //if okay reserve else error
+            List<string> availability = new List<string>();
+            for (int i = 0; i < seats.Count; i++)
+            {
+                availability.Add(await ticketService.CheckAvailability(GetSeatNumber(seats[i]), flightInfo.flight.id));
+            }
+            //Create ticket and reserve seat
+            if (availability.Contains("false"))
+            {
+                //Error
+                NavigationManager.NavigateTo("/errorPage");
+            }
+            else
+            {
+                for (int i = 0; i < passengers.Count; i++)
+                {
+                    await ticketService.BookAFlight(passengers[i].passportNumber, flightInfo.flight.id, GetSeatNumber(seats[i]), luggage[i]);
+                }
+                NavigationManager.NavigateTo("/success");
+            }
+        }
+    }
+    private int GetSeatNumber(string seat)
+    {
+        if (seat.Length == 2)
+        {
+            int mid = seat.Length / 2;
+            String[] parts = { seat.Substring(0, mid), seat.Substring(mid) };
+            int number = Convert.ToInt32(parts[0]);
+            string character = parts[1];
+            return CalculateByNumberAndString(number, character);
+        }
+        else
+        {
+            String[] parts = { seat.Substring(0, 2), seat.Substring(2) };
+            int number = Convert.ToInt32(parts[0]);
+            string character = parts[1];
+            return CalculateByNumberAndString(number, character);
+        }
+    }
+    private int CalculateByNumberAndString(int number, string character)
+    {
+        int sum = number * 6;
+        switch (character)
+        {
+            case "A":
+                sum -= 5;
+                break;
+            case "B":
+                sum -= 4;
+                break;
+            case "C":
+                sum -= 3;
+                break;
+            case "D":
+                sum -= 2;
+                break;
+            case "E":
+                sum -= 1;
+                break;
+            case "F":
+                break;
+        }
+        return sum;
+    }
+    public class CreditModel
+    {
+        [Required]
+        [Range(1000000000000000, 9999999999999999, ErrorMessage = "Please enter valid credit card number")]
+        public long creditCardNumber { get; set; }
+        [Required]
+        [Range(000, 999, ErrorMessage = "Please enter valid cvv")]
+        public int cvv { get; set; }
+        [Required]
+        [Range(1, 12, ErrorMessage = "Please enter valid month")]
+        public int expirationMonth { get; set; }
+        [Range(2020, 2050, ErrorMessage = "Please enter valid year")]
+        [Required]
+        public int expirationYear { get; set; }
+        [Required]
+        public string name { get; set; }
+    }
+}

@@ -1,0 +1,81 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\karrt\\Desktop\\All_Folders\\Uni\\Semester3\\Semester Project Heterogeneous System (SEP3)\\1 SEP3\\SEP3XA20-ARS\\Client\\Client\\Client.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\karrt\\Desktop\\All_Folders\\Uni\\Semester3\\Semester Project Heterogeneous System (SEP3)\\1 SEP3\\SEP3XA20-ARS\\Client\\Client\\Client.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\karrt\\Desktop\\All_Folders\\Uni\\Semester3\\Semester Project Heterogeneous System (SEP3)\\1 SEP3\\SEP3XA20-ARS\\Client\\Client\\Client.csproj",
+        "projectName": "Client",
+        "projectPath": "C:\\Users\\karrt\\Desktop\\All_Folders\\Uni\\Semester3\\Semester Project Heterogeneous System (SEP3)\\1 SEP3\\SEP3XA20-ARS\\Client\\Client\\Client.csproj",
+        "packagesPath": "C:\\Users\\karrt\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\karrt\\Desktop\\All_Folders\\Uni\\Semester3\\Semester Project Heterogeneous System (SEP3)\\1 SEP3\\SEP3XA20-ARS\\Client\\Client\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\karrt\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "Blazored.Toast": {
+              "target": "Package",
+              "version": "[3.1.2, )"
+            },
+            "Blazored.Typeahead": {
+              "target": "Package",
+              "version": "[4.4.1, )"
+            },
+            "BuildWebCompiler": {
+              "target": "Package",
+              "version": "[1.12.394, )"
+            },
+            "Radzen.Blazor": {
+              "target": "Package",
+              "version": "[2.17.11, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

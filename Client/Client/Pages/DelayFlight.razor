@@ -1,0 +1,109 @@
+﻿@page "/delayFlight"
+@using Microsoft.AspNetCore.WebUtilities @*for QueryHelpers*@
+@using Client.Data
+@inject IFlightService flightService
+@inject NavigationManager navigationManager
+
+<div class="section">
+    <div class="section-center">
+
+        <div class="justify-content-center container d-flex">
+            <div class="row">
+                <div class="booking-form justify-content-center">
+                    <div class="row ">
+                        <h2 class=" text-white mx-auto mb-4">
+                            Delay flights
+                        </h2>
+                        <div class="col-12">
+                            <div class="row justify-content-center">
+
+                                <div class=" col-md-4 ">
+                                    <div class="form-group">
+                                        <span class="form-label">Hours</span>
+                                        <input class="form-control" type="number" placeholder="Hours" @bind-value="hours" min="0">
+                                    </div>
+                                </div>
+
+
+
+                                <div class=" col-md-4 ">
+                                    <div class="form-group">
+                                        <span class="form-label">Minutes</span>
+                                        <input class="form-control" type="number" placeholder="Minutes" @bind-value="minutes" min="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-10">
+                            <div class="row justify-content-end">
+
+                                <button class="yellow-btn cancel " @onclick="goBack">Cancel</button>
+                                <button class="yellow-btn ml-3 mr-3" @onclick="delay">Confirm</button>
+
+                            </div>
+                        </div>
+                        <div class="row text-center">
+                            <div style="color:red" class="font-weight-bold py-3 m-auto">@errorMessage</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    private int id;
+    private int minutes;
+    private int hours;
+    private string errorMessage;
+
+    protected override void OnInitialized()
+    {
+        errorMessage = "";
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("ID", out var flightid))
+        {
+            this.id = Convert.ToInt32(flightid.First());
+        }
+    }
+
+    private async Task delay()
+    {
+        errorMessage = "";
+        if (checkInput())
+        {
+            int calculatedminutes = (hours * 60) + minutes;
+            await flightService.DelayFlight(id, calculatedminutes);
+            navigationManager.NavigateTo("/viewallflights");
+        }
+        else
+        {
+            errorMessage = "Please enter valid delay minutes and hours";
+        }
+    }
+
+    private bool checkInput()
+    {
+        if (minutes < 0 || hours < 0)
+        {
+            return false;
+        }
+        else if (minutes == 0 && hours == 0)
+        {
+            return false;
+        }
+        else return true;
+    }
+
+    private void goBack()
+    {
+        errorMessage = "";
+        navigationManager.NavigateTo("/viewallflights");
+    }
+
+
+}

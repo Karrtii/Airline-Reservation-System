@@ -1,0 +1,40 @@
+﻿@page "/reserveSeat"
+@using Client.Model
+@using Client.Data
+@inject IBookingService bookingService
+@inject NavigationManager navigationManager
+@inject IAirplaneService airplaneService
+@attribute [Authorize]
+@namespace Airplanes
+
+@if (planeType.Equals("A"))
+{
+    <p>Loading...</p>
+}
+else
+{
+    if (planeType.Equals("Boeing 737"))
+    {
+        <Airplanes.Boeing />
+    }
+    else if(planeType.Equals("Comac C919")) 
+    {
+        <Airplanes.Comac/>
+    }
+    else if(planeType.Equals("Irkut MC21"))
+    {
+        <Airplanes.Irkut/>
+    }
+}
+
+
+@code
+{ private string planeType = "A";
+
+    protected async override Task OnInitializedAsync()
+    {
+        Airplane airplane = await airplaneService.getTypeByFlightID(bookingService.getFlightID());
+        planeType = airplane.planeType;
+    }
+
+}

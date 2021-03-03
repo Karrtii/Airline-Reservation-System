@@ -1,0 +1,170 @@
+﻿@page "/searchflight"
+@using Blazored.Typeahead
+@using Client.Model
+@using Client.Data
+@using Client.Security
+@using Client.CustomValidation
+@using System.ComponentModel.DataAnnotations
+@inject IAirportService airportService
+@inject NavigationManager NavigationManager
+@inject CustomDataProtection customDataProtection
+@inject SecurityService securityService
+@inject IUserService userService
+@inject IToastService toastService
+@inject IBookingService bookingService
+@inject IFlightInfoService flightInfoService
+@attribute [Authorize]
+
+<EditForm Model="@searchModel" OnValidSubmit="SearchForFlights">
+    <DataAnnotationsValidator />
+    <div id="booking" class="section">
+        <div class="section-center">
+            @if (user == null)
+            {
+                <p>Loading...</p>
+            }
+            else
+            {
+                <p class="text-center">Welcome @user.firstName @user.lastName</p>
+            }
+            <div class="container d-flex justify-content-center">
+                <div class="row">
+                    <div class="booking-form">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <span class="form-label">Flying from</span>
+
+                                    <BlazoredTypeahead SearchMethod="searchAirport" @bind-Value="searchModel.origin">
+                                        <SelectedTemplate Context="anotherContext">@anotherContext.IATACode</SelectedTemplate>
+                                        <ResultTemplate Context="anotherContext">@anotherContext.airportName</ResultTemplate>
+                                    </BlazoredTypeahead>
+                                    <ValidationMessage For="@(() => searchModel.origin)" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <span class="form-label">Flying to</span>
+                                    <BlazoredTypeahead SearchMethod="searchAirport" @bind-Value="searchModel.destination">
+                                        <SelectedTemplate Context="anotherContext">@anotherContext.IATACode</SelectedTemplate>
+                                        <ResultTemplate Context="anotherContext">@anotherContext.airportName</ResultTemplate>
+                                    </BlazoredTypeahead>
+                                    <ValidationMessage For="@(() => searchModel.destination)" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <span class="form-label">Departing</span>
+                                    <InputDate class="form-control" type="date" placeholder="Departing" @bind-Value="searchModel.departing" />
+                                    <ValidationMessage For="@(() => searchModel.departing)" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <span class="form-label">Adults (18+)</span>
+                                    <InputNumber class="form-control" min="1" max="5" @bind-Value="searchModel.numberOfAdults" />
+                                    <span class="select-arrow"></span>
+                                    <ValidationMessage For="@(() => searchModel.numberOfAdults)" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <span class="form-label">Children (0-17)</span>
+                                    <InputNumber class="form-control" min="0" max="5" @bind-Value="searchModel.numberOfChildren" />
+                                    <span class="select-arrow"></span>
+                                    <ValidationMessage For="@(() => searchModel.numberOfChildren)" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 offset-md-3">
+                                <div class="form-btn">
+                                    <button class="submit-btn" type="submit">Show flights</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private IList<Airport> airports;
+    private Airport origin;
+    private Airport destination;
+    private Departure wishedDeparture = new Departure();
+    private int numberOfAdults;
+    private int numberOfChildren;
+    private SearchModel searchModel = new SearchModel();
+    private User user = new User();
+
+    public class SearchModel
+    {
+        [Required]
+        public Airport origin { get; set; }
+        [Required]
+        public Airport destination { get; set; }
+        [Required]
+        [Range(1, 5, ErrorMessage = "Please enter a valid number of adult passengers(1-5)")]
+        public int numberOfAdults { get; set; } = 1;
+        [Range(0, 5, ErrorMessage = "Please enter a valid number of children passengers(0-5)")]
+        public int numberOfChildren { get; set; }
+        [Required]
+        [SearchDate]
+        public DateTime departing { get; set; } = DateTime.Now;
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        airports = await airportService.getAirports();
+        user = await userService.getUser(bookingService.getUsername());
+        string delayed = await flightInfoService.checkIfDelayedOrCancelled("delayed", bookingService.getUsername());
+        string cancelled = await flightInfoService.checkIfDelayedOrCancelled("cancel", bookingService.getUsername());
+
+        if (bookingService.getDelay() != 1)
+        {
+            if (delayed.Equals("true"))
+            {
+                toastService.ShowWarning("One or more of your flights have been delayed", "Delay");
+                bookingService.setDelay(1);
+            }
+        }
+        if (bookingService.getWarning() != 1)
+        {
+            if (cancelled.Equals("true"))
+            {
+                toastService.ShowError("One or more of your flights have been cancelled", "Cancellation");
+                bookingService.setWarning(1);
+            }
+        }
+    }
+
+    private void SearchForFlights()
+    {
+        string originString = customDataProtection.Encode("origin");
+        string destinationString = customDataProtection.Encode("destination");
+        string wishedDepartureString = customDataProtection.Encode("wishedDeparture");
+        string adultsString = customDataProtection.Encode("adults");
+        string childrenString = customDataProtection.Encode("children");
+
+        securityService.originFlightResult = originString;
+        securityService.destinationFlightResult = destinationString;
+        securityService.wishedDepartureFlightResult = wishedDepartureString;
+        securityService.adultsFlightResult = adultsString;
+        securityService.childrenFlightResult = childrenString;
+
+        NavigationManager.NavigateTo("/flightresult?"+originString+"=" +customDataProtection.Encode(searchModel.origin.IATACode) + "&"+destinationString+"=" + customDataProtection.Encode(searchModel.destination.IATACode) + "&"+wishedDepartureString+"=" + customDataProtection.Encode(searchModel.departing.Date.ToString()) + "&"+adultsString+"=" + customDataProtection.Encode(searchModel.numberOfAdults.ToString()) + "&"+childrenString+"=" + customDataProtection.Encode(searchModel.numberOfChildren.ToString()));
+    }
+
+    private async Task<IEnumerable<Airport>> searchAirport(string searchText)
+    {
+        return await Task.FromResult(airports.Where(x => x.airportName.ToLower().Contains(searchText.ToLower())).ToList());
+    }
+
+
+}

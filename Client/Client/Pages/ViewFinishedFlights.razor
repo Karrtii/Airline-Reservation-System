@@ -1,0 +1,98 @@
+﻿@page "/finishedviewmyflights"
+@using Client.Model
+@using Client.Data
+@using System.Net
+@using Client.Security
+@inject IPassengerService passengerService
+@inject IBookingService bookingService
+@inject IFlightInfoService flightInfoService
+@inject SecurityService  securityService
+@inject NavigationManager NavigationManager
+@inject CustomDataProtection customDataProtection
+@attribute [Authorize]
+
+<div class="container mt-5">
+    <div class="row justify-content-center align-content-center align-items-center">
+        <div class="col-12 text-center">
+            <h2> Finished flights</h2>
+        </div>
+
+
+        @if (myFlights == null)
+        {
+            <p>Loading...</p>
+        }
+        else if (!myFlights.Any())
+        {
+            <div class="col-12 col-md-8 d-flex overview-card empty  text-center justify-content-center p-3 align-items-center text-center">
+                <span>You don't have any finished flights</span>
+            </div>
+        }
+        else
+        {
+            <div class="col-12 col-md-8 d-flex  p-3 align-items-center justify-content-between my-3">
+
+                <table class="table table-borderless">
+                    <thead class="bg-primary">
+                        <tr>
+                            <th scope="col">Flight</th>
+                            <th scope="col">Customer</th>
+                            <th scope="col">Status</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    @foreach (FlightInfo f in myFlights)
+                    {
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <span>@f.departure.fromWhere</span>
+                                        <span>-</span>
+                                        <span>@f.arrival.fromWhere</span>
+                                    </div>
+                                </td>
+                                <td>@f.passenger.firstname @f.passenger.lastname</td>
+                                <td>@f.flight.status</td>
+                                @if (f.flight.status.Equals("cancelled"))
+                                {
+
+                                }
+                                else
+                                {
+                                    <td>
+                                        <button class="btn-primary btn-rounded ml-auto" @onclick="()=>ViewDetails(f.passenger,f.flight)"> View details</button>
+                                    </td>
+
+                                }
+
+
+                            </tr>
+
+                        </tbody>
+                    }
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private List<Passenger> myPassengers = new List<Passenger>();
+    private List<FlightInfo> myFlights = new List<FlightInfo>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        myPassengers = await passengerService.getMyPassengers(bookingService.getUsername());
+        myFlights = await flightInfoService.getFlightInfoPassFinished(bookingService.getUsername(),"finished");
+    }
+
+    private void ViewDetails(Passenger passenger, Flight flight)
+    {
+        string encodedStringPass = customDataProtection.Encode("PassengerNum");
+        string encodedStringID = customDataProtection.Encode("FlightID");
+        securityService.passengerPassportFlightDetails = encodedStringPass;
+        securityService.flightIDFlightDetails = encodedStringID;
+        NavigationManager.NavigateTo("/finishedflightdetail?" + encodedStringPass + "=" + customDataProtection.Encode(passenger.passportNumber.ToString()) + "&" + encodedStringID + "=" + customDataProtection.Encode(flight.id.ToString()));
+    }
+}

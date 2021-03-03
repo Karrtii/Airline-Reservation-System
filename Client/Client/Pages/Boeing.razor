@@ -1,0 +1,1719 @@
+﻿@namespace Airplanes
+@using Client.Model;
+@using Client.Data;
+@inject IBookingService bookingService
+@inject NavigationManager navigationManager
+@inject ITicketService ticketService
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-5 py-3">
+            <div class="plane">
+                <div class="cockpit">
+                    <h1>Please select a seat</h1>
+                </div>
+                <div class="exit exit--front fuselage">
+
+                </div>
+                <ol class="cabin fuselage">
+                    <li class="row--1">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum1A = "1A";}
+                                <input type="checkbox" id="1A" disabled="@alreadyReservedSeats[0]" @bind="allSeatsInPlane[0]" @onclick="(() => SelectSeat(seatNum1A))" />
+                                <label for="1A">1A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum1B = "1B";}
+                                <input type="checkbox" id="1B" disabled="@alreadyReservedSeats[1]" @bind="allSeatsInPlane[1]" @onclick="(() => SelectSeat(seatNum1B))" />
+                                <label for="1B">1B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum1C = "1C";}
+                                <input type="checkbox" id="1C" disabled="@alreadyReservedSeats[2]" @bind="allSeatsInPlane[2]" @onclick="(() => SelectSeat(seatNum1C))" />
+                                <label for="1C">1C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum1D = "1D";}
+                                <input type="checkbox" id="1D" disabled="@alreadyReservedSeats[3]" @bind="allSeatsInPlane[3]" @onclick="(() => SelectSeat(seatNum1D))" />
+                                <label for="1D">1D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum1E = "1E";}
+                                <input type="checkbox" id="1E" disabled="@alreadyReservedSeats[4]" @bind="allSeatsInPlane[4]" @onclick="(() => SelectSeat(seatNum1E))" />
+                                <label for="1E">1E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum1F = "1F";}
+                                <input type="checkbox" id="1F" disabled="@alreadyReservedSeats[5]" @bind="allSeatsInPlane[5]" @onclick="(() => SelectSeat(seatNum1F))" />
+                                <label for="1F">1F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--2">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum2A = "2A";}
+                                <input type="checkbox" id="2A" disabled="@alreadyReservedSeats[6]" @bind="allSeatsInPlane[6]" @onclick="(() => SelectSeat(seatNum2A))" />
+                                <label for="2A">2A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum2B = "2B";}
+                                <input type="checkbox" id="2B" disabled="@alreadyReservedSeats[7]" @bind="allSeatsInPlane[7]" @onclick="(() => SelectSeat(seatNum2B))" />
+                                <label for="2B">2B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum2C = "2C";}
+                                <input type="checkbox" id="2C" disabled="@alreadyReservedSeats[8]" @bind="allSeatsInPlane[8]" @onclick="(() => SelectSeat(seatNum2C))" />
+                                <label for="2C">2C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum2D = "2D";}
+                                <input type="checkbox" id="2D" disabled="@alreadyReservedSeats[9]" @bind="allSeatsInPlane[9]" @onclick="(() => SelectSeat(seatNum2D))" />
+                                <label for="2D">2D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum2E = "2E";}
+                                <input type="checkbox" id="2E" disabled="@alreadyReservedSeats[10]" @bind="allSeatsInPlane[10]" @onclick="(() => SelectSeat(seatNum2E))" />
+                                <label for="2E">2E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum2F = "2F";}
+                                <input type="checkbox" id="2F" disabled="@alreadyReservedSeats[11]" @bind="allSeatsInPlane[11]" @onclick="(() => SelectSeat(seatNum2F))" />
+                                <label for="2F">2F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--3">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum3A = "3A";}
+                                <input type="checkbox" id="3A" disabled="@alreadyReservedSeats[12]" @bind="allSeatsInPlane[12]" @onclick="(() => SelectSeat(seatNum3A))" />
+                                <label for="3A">3A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum3B = "3B";}
+                                <input type="checkbox" id="3B" disabled="@alreadyReservedSeats[13]" @bind="allSeatsInPlane[13]" @onclick="(() => SelectSeat(seatNum3B))" />
+                                <label for="3B">3B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum3C = "3C";}
+                                <input type="checkbox" id="3C" disabled="@alreadyReservedSeats[14]" @bind="allSeatsInPlane[14]" @onclick="(() => SelectSeat(seatNum3C))" />
+                                <label for="3C">3C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum3D = "3D";}
+                                <input type="checkbox" id="3D" disabled="@alreadyReservedSeats[15]" @bind="allSeatsInPlane[15]" @onclick="(() => SelectSeat(seatNum3D))" />
+                                <label for="3D">3D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum3E = "3E";}
+                                <input type="checkbox" id="3E" disabled="@alreadyReservedSeats[16]" @bind="allSeatsInPlane[16]" @onclick="(() => SelectSeat(seatNum3E))" />
+                                <label for="3E">3E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum3F = "3F";}
+                                <input type="checkbox" id="3F" disabled="@alreadyReservedSeats[17]" @bind="allSeatsInPlane[17]" @onclick="(() => SelectSeat(seatNum3F))" />
+                                <label for="3F">3F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--4">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum4A = "4A";}
+                                <input type="checkbox" id="4A" disabled="@alreadyReservedSeats[18]" @bind="allSeatsInPlane[18]" @onclick="(() => SelectSeat(seatNum4A))" />
+                                <label for="4A">4A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum4B = "4B";}
+                                <input type="checkbox" id="4B" disabled="@alreadyReservedSeats[19]" @bind="allSeatsInPlane[19]" @onclick="(() => SelectSeat(seatNum4B))" />
+                                <label for="4B">4B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum4C = "4C";}
+                                <input type="checkbox" id="4C" disabled="@alreadyReservedSeats[20]" @bind="allSeatsInPlane[20]" @onclick="(() => SelectSeat(seatNum4C))" />
+                                <label for="4C">4C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum4D = "4D";}
+                                <input type="checkbox" id="4D" disabled="@alreadyReservedSeats[21]" @bind="allSeatsInPlane[21]" @onclick="(() => SelectSeat(seatNum4D))" />
+                                <label for="4D">4D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum4E = "4E";}
+                                <input type="checkbox" id="4E" disabled="@alreadyReservedSeats[22]" @bind="allSeatsInPlane[22]" @onclick="(() => SelectSeat(seatNum4E))" />
+                                <label for="4E">4E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum4F = "4F";}
+                                <input type="checkbox" id="4F" disabled="@alreadyReservedSeats[23]" @bind="allSeatsInPlane[23]" @onclick="(() => SelectSeat(seatNum4F))" />
+                                <label for="4F">4F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--5">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum5A = "5A";}
+                                <input type="checkbox" id="5A" disabled="@alreadyReservedSeats[24]" @bind="allSeatsInPlane[24]" @onclick="(() => SelectSeat(seatNum5A))" />
+                                <label for="5A">5A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum5B = "5B";}
+                                <input type="checkbox" id="5B" disabled="@alreadyReservedSeats[25]" @bind="allSeatsInPlane[25]" @onclick="(() => SelectSeat(seatNum5B))" />
+                                <label for="5B">5B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum5C = "5C";}
+                                <input type="checkbox" id="5C" disabled="@alreadyReservedSeats[26]" @bind="allSeatsInPlane[26]" @onclick="(() => SelectSeat(seatNum5C))" />
+                                <label for="5C">5C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum5D = "5D";}
+                                <input type="checkbox" id="5D" disabled="@alreadyReservedSeats[27]" @bind="allSeatsInPlane[27]" @onclick="(() => SelectSeat(seatNum5D))" />
+                                <label for="5D">5D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum5E = "5E";}
+                                <input type="checkbox" id="5E" disabled="@alreadyReservedSeats[28]" @bind="allSeatsInPlane[28]" @onclick="(() => SelectSeat(seatNum5E))" />
+                                <label for="5E">5E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum5F = "5F";}
+                                <input type="checkbox" id="5F" disabled="@alreadyReservedSeats[29]" @bind="allSeatsInPlane[29]" @onclick="(() => SelectSeat(seatNum5F))" />
+                                <label for="5F">5F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--6">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum6A = "6A";}
+                                <input type="checkbox" id="6A" disabled="@alreadyReservedSeats[30]" @bind="allSeatsInPlane[30]" @onclick="(() => SelectSeat(seatNum6A))" />
+                                <label for="6A">6A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum6B = "6B";}
+                                <input type="checkbox" id="6B" disabled="@alreadyReservedSeats[31]" @bind="allSeatsInPlane[31]" @onclick="(() => SelectSeat(seatNum6B))" />
+                                <label for="6B">6B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum6C = "6C";}
+                                <input type="checkbox" id="6C" disabled="@alreadyReservedSeats[32]" @bind="allSeatsInPlane[32]" @onclick="(() => SelectSeat(seatNum6C))" />
+                                <label for="6C">6C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum6D = "6D";}
+                                <input type="checkbox" id="6D" disabled="@alreadyReservedSeats[33]" @bind="allSeatsInPlane[33]" @onclick="(() => SelectSeat(seatNum6D))" />
+                                <label for="6D">6D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum6E = "6E";}
+                                <input type="checkbox" id="6E" disabled="@alreadyReservedSeats[34]" @bind="allSeatsInPlane[34]" @onclick="(() => SelectSeat(seatNum6E))" />
+                                <label for="6E">6E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum6F = "6F";}
+                                <input type="checkbox" id="6F" disabled="@alreadyReservedSeats[35]" @bind="allSeatsInPlane[35]" @onclick="(() => SelectSeat(seatNum6F))" />
+                                <label for="6F">6F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--7">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum7A = "7A";}
+                                <input type="checkbox" id="7A" disabled="@alreadyReservedSeats[36]" @bind="allSeatsInPlane[36]" @onclick="(() => SelectSeat(seatNum7A))" />
+                                <label for="7A">7A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum7B = "7B";}
+                                <input type="checkbox" id="7B" disabled="@alreadyReservedSeats[37]" @bind="allSeatsInPlane[37]" @onclick="(() => SelectSeat(seatNum7B))" />
+                                <label for="7B">7B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum7C = "7C";}
+                                <input type="checkbox" id="7C" disabled="@alreadyReservedSeats[38]" @bind="allSeatsInPlane[38]" @onclick="(() => SelectSeat(seatNum7C))" />
+                                <label for="7C">7C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum7D = "7D";}
+                                <input type="checkbox" id="7D" disabled="@alreadyReservedSeats[39]" @bind="allSeatsInPlane[39]" @onclick="(() => SelectSeat(seatNum7D))" />
+                                <label for="7D">7D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum7E = "7E";}
+                                <input type="checkbox" id="7E" disabled="@alreadyReservedSeats[40]" @bind="allSeatsInPlane[40]" @onclick="(() => SelectSeat(seatNum7E))" />
+                                <label for="7E">7E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum7F = "7F";}
+                                <input type="checkbox" id="7F" disabled="@alreadyReservedSeats[41]" @bind="allSeatsInPlane[41]" @onclick="(() => SelectSeat(seatNum7F))" />
+                                <label for="7F">7F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--8">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum8A = "8A";}
+                                <input type="checkbox" id="8A" disabled="@alreadyReservedSeats[42]" @bind="allSeatsInPlane[42]" @onclick="(() => SelectSeat(seatNum8A))" />
+                                <label for="8A">8A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum8B = "8B";}
+                                <input type="checkbox" id="8B" disabled="@alreadyReservedSeats[43]" @bind="allSeatsInPlane[43]" @onclick="(() => SelectSeat(seatNum8B))" />
+                                <label for="8B">8B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum8C = "8C";}
+                                <input type="checkbox" id="8C" disabled="@alreadyReservedSeats[44]" @bind="allSeatsInPlane[44]" @onclick="(() => SelectSeat(seatNum8C))" />
+                                <label for="8C">8C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum8D = "8D";}
+                                <input type="checkbox" id="8D" disabled="@alreadyReservedSeats[45]" @bind="allSeatsInPlane[45]" @onclick="(() => SelectSeat(seatNum8D))" />
+                                <label for="8D">8D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum8E = "8E";}
+                                <input type="checkbox" id="8E" disabled="@alreadyReservedSeats[46]" @bind="allSeatsInPlane[46]" @onclick="(() => SelectSeat(seatNum8E))" />
+                                <label for="8E">8E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum8F = "8F";}
+                                <input type="checkbox" id="8F" disabled="@alreadyReservedSeats[47]" @bind="allSeatsInPlane[47]" @onclick="(() => SelectSeat(seatNum8F))" />
+                                <label for="8F">8F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--9">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum9A = "9A";}
+                                <input type="checkbox" id="9A" disabled="@alreadyReservedSeats[48]" @bind="allSeatsInPlane[48]" @onclick="(() => SelectSeat(seatNum9A))" />
+                                <label for="9A">9A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum9B = "9B";}
+                                <input type="checkbox" id="9B" disabled="@alreadyReservedSeats[49]" @bind="allSeatsInPlane[49]" @onclick="(() => SelectSeat(seatNum9B))" />
+                                <label for="9B">9B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum9C = "9C";}
+                                <input type="checkbox" id="9C" disabled="@alreadyReservedSeats[50]" @bind="allSeatsInPlane[50]" @onclick="(() => SelectSeat(seatNum9C))" />
+                                <label for="9C">9C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum9D = "9D";}
+                                <input type="checkbox" id="9D" disabled="@alreadyReservedSeats[51]" @bind="allSeatsInPlane[51]" @onclick="(() => SelectSeat(seatNum9D))" />
+                                <label for="9D">9D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum9E = "9E";}
+                                <input type="checkbox" id="9E" disabled="@alreadyReservedSeats[52]" @bind="allSeatsInPlane[52]" @onclick="(() => SelectSeat(seatNum9E))" />
+                                <label for="9E">9E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum9F = "9F";}
+                                <input type="checkbox" id="9F" disabled="@alreadyReservedSeats[53]" @bind="allSeatsInPlane[53]" @onclick="(() => SelectSeat(seatNum9F))" />
+                                <label for="9F">9F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--10">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum10A = "10A";}
+                                <input type="checkbox" id="10A" disabled="@alreadyReservedSeats[54]" @bind="allSeatsInPlane[54]" @onclick="(() => SelectSeat(seatNum10A))" />
+                                <label for="10A">10A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum10B = "10B";}
+                                <input type="checkbox" id="10B" disabled="@alreadyReservedSeats[55]" @bind="allSeatsInPlane[55]" @onclick="(() => SelectSeat(seatNum10B))" />
+                                <label for="10B">10B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum10C = "10C";}
+                                <input type="checkbox" id="10C" disabled="@alreadyReservedSeats[56]" @bind="allSeatsInPlane[56]" @onclick="(() => SelectSeat(seatNum10C))" />
+                                <label for="10C">10C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum10D = "10D";}
+                                <input type="checkbox" id="10D" disabled="@alreadyReservedSeats[57]" @bind="allSeatsInPlane[57]" @onclick="(() => SelectSeat(seatNum10D))" />
+                                <label for="10D">10D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum10E = "10E";}
+                                <input type="checkbox" id="10E" disabled="@alreadyReservedSeats[58]" @bind="allSeatsInPlane[58]" @onclick="(() => SelectSeat(seatNum10E))" />
+                                <label for="10E">10E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum10F = "10F";}
+                                <input type="checkbox" id="10F" disabled="@alreadyReservedSeats[59]" @bind="allSeatsInPlane[59]" @onclick="(() => SelectSeat(seatNum10F))" />
+                                <label for="10F">10F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--11">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum11A = "11A";}
+                                <input type="checkbox" id="11A" disabled="@alreadyReservedSeats[60]" @bind="allSeatsInPlane[60]" @onclick="(() => SelectSeat(seatNum11A))" />
+                                <label for="11A">11A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum11B = "11B";}
+                                <input type="checkbox" id="11B" disabled="@alreadyReservedSeats[61]" @bind="allSeatsInPlane[61]" @onclick="(() => SelectSeat(seatNum11B))" />
+                                <label for="11B">11B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum11C = "11C";}
+                                <input type="checkbox" id="11C" disabled="@alreadyReservedSeats[62]" @bind="allSeatsInPlane[62]" @onclick="(() => SelectSeat(seatNum11C))" />
+                                <label for="11C">11C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum11D = "11D";}
+                                <input type="checkbox" id="11D" disabled="@alreadyReservedSeats[63]" @bind="allSeatsInPlane[63]" @onclick="(() => SelectSeat(seatNum11D))" />
+                                <label for="11D">11D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum11E = "11E";}
+                                <input type="checkbox" id="11E" disabled="@alreadyReservedSeats[64]" @bind="allSeatsInPlane[64]" @onclick="(() => SelectSeat(seatNum11E))" />
+                                <label for="11E">11E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum11F = "11F";}
+                                <input type="checkbox" id="11F" disabled="@alreadyReservedSeats[65]" @bind="allSeatsInPlane[65]" @onclick="(() => SelectSeat(seatNum11F))" />
+                                <label for="11F">11F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--12">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum12A = "12A";}
+                                <input type="checkbox" id="12A" disabled="@alreadyReservedSeats[66]" @bind="allSeatsInPlane[66]" @onclick="(() => SelectSeat(seatNum12A))" />
+                                <label for="12A">12A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum12B = "12B";}
+                                <input type="checkbox" id="12B" disabled="@alreadyReservedSeats[67]" @bind="allSeatsInPlane[67]" @onclick="(() => SelectSeat(seatNum12B))" />
+                                <label for="12B">12B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum12C = "12C";}
+                                <input type="checkbox" id="12C" disabled="@alreadyReservedSeats[68]" @bind="allSeatsInPlane[68]" @onclick="(() => SelectSeat(seatNum12C))" />
+                                <label for="12C">12C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum12D = "12D";}
+                                <input type="checkbox" id="12D" disabled="@alreadyReservedSeats[69]" @bind="allSeatsInPlane[69]" @onclick="(() => SelectSeat(seatNum12D))" />
+                                <label for="12D">12D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum12E = "12E";}
+                                <input type="checkbox" id="12E" disabled="@alreadyReservedSeats[70]" @bind="allSeatsInPlane[70]" @onclick="(() => SelectSeat(seatNum12E))" />
+                                <label for="12E">12E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum12F = "12F";}
+                                <input type="checkbox" id="12F" disabled="@alreadyReservedSeats[71]" @bind="allSeatsInPlane[71]" @onclick="(() => SelectSeat(seatNum12F))" />
+                                <label for="12F">12F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--13">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum13A = "13A";}
+                                <input type="checkbox" id="13A" disabled="@alreadyReservedSeats[72]" @bind="allSeatsInPlane[72]" @onclick="(() => SelectSeat(seatNum13A))" />
+                                <label for="13A">13A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum13B = "13B";}
+                                <input type="checkbox" id="13B" disabled="@alreadyReservedSeats[73]" @bind="allSeatsInPlane[73]" @onclick="(() => SelectSeat(seatNum13B))" />
+                                <label for="13B">13B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum13C = "13C";}
+                                <input type="checkbox" id="13C" disabled="@alreadyReservedSeats[74]" @bind="allSeatsInPlane[74]" @onclick="(() => SelectSeat(seatNum13C))" />
+                                <label for="13C">13C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum13D = "13D";}
+                                <input type="checkbox" id="13D" disabled="@alreadyReservedSeats[75]" @bind="allSeatsInPlane[75]" @onclick="(() => SelectSeat(seatNum13D))" />
+                                <label for="13D">13D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum13E = "13E";}
+                                <input type="checkbox" id="13E" disabled="@alreadyReservedSeats[76]" @bind="allSeatsInPlane[76]" @onclick="(() => SelectSeat(seatNum13E))" />
+                                <label for="13E">13E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum13F = "13F";}
+                                <input type="checkbox" id="13F" disabled="@alreadyReservedSeats[77]" @bind="allSeatsInPlane[77]" @onclick="(() => SelectSeat(seatNum13F))" />
+                                <label for="13F">13F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--14">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum14A = "14A";}
+                                <input type="checkbox" id="14A" disabled="@alreadyReservedSeats[78]" @bind="allSeatsInPlane[78]" @onclick="(() => SelectSeat(seatNum14A))" />
+                                <label for="14A">14A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum14B = "14B";}
+                                <input type="checkbox" id="14B" disabled="@alreadyReservedSeats[79]" @bind="allSeatsInPlane[79]" @onclick="(() => SelectSeat(seatNum14B))" />
+                                <label for="14B">14B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum14C = "14C";}
+                                <input type="checkbox" id="14C" disabled="@alreadyReservedSeats[80]" @bind="allSeatsInPlane[80]" @onclick="(() => SelectSeat(seatNum14C))" />
+                                <label for="14C">14C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum14D = "14D";}
+                                <input type="checkbox" id="14D" disabled="@alreadyReservedSeats[81]" @bind="allSeatsInPlane[81]" @onclick="(() => SelectSeat(seatNum14D))" />
+                                <label for="14D">14D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum14E = "14E";}
+                                <input type="checkbox" id="14E" disabled="@alreadyReservedSeats[82]" @bind="allSeatsInPlane[82]" @onclick="(() => SelectSeat(seatNum14E))" />
+                                <label for="14E">14E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum14F = "14F";}
+                                <input type="checkbox" id="14F" disabled="@alreadyReservedSeats[83]" @bind="allSeatsInPlane[83]" @onclick="(() => SelectSeat(seatNum14F))" />
+                                <label for="14F">14F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--15">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum15A = "15A";}
+                                <input type="checkbox" id="15A" disabled="@alreadyReservedSeats[84]" @bind="allSeatsInPlane[84]" @onclick="(() => SelectSeat(seatNum15A))" />
+                                <label for="15A">15A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum15B = "15B";}
+                                <input type="checkbox" id="15B" disabled="@alreadyReservedSeats[85]" @bind="allSeatsInPlane[85]" @onclick="(() => SelectSeat(seatNum15B))" />
+                                <label for="15B">15B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum15C = "15C";}
+                                <input type="checkbox" id="15C" disabled="@alreadyReservedSeats[86]" @bind="allSeatsInPlane[86]" @onclick="(() => SelectSeat(seatNum15C))" />
+                                <label for="15C">15C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum15D = "15D";}
+                                <input type="checkbox" id="15D" disabled="@alreadyReservedSeats[87]" @bind="allSeatsInPlane[87]" @onclick="(() => SelectSeat(seatNum15D))" />
+                                <label for="15D">15D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum15E = "15E";}
+                                <input type="checkbox" id="15E" disabled="@alreadyReservedSeats[88]" @bind="allSeatsInPlane[88]" @onclick="(() => SelectSeat(seatNum15E))" />
+                                <label for="15E">15E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum15F = "15F";}
+                                <input type="checkbox" id="15F" disabled="@alreadyReservedSeats[89]" @bind="allSeatsInPlane[89]" @onclick="(() => SelectSeat(seatNum15F))" />
+                                <label for="15F">15F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--16">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum16A = "16A";}
+                                <input type="checkbox" id="16A" disabled="@alreadyReservedSeats[90]" @bind="allSeatsInPlane[90]" @onclick="(() => SelectSeat(seatNum16A))" />
+                                <label for="16A">16A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum16B = "16B";}
+                                <input type="checkbox" id="16B" disabled="@alreadyReservedSeats[91]" @bind="allSeatsInPlane[91]" @onclick="(() => SelectSeat(seatNum16B))" />
+                                <label for="16B">16B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum16C = "16C";}
+                                <input type="checkbox" id="16C" disabled="@alreadyReservedSeats[92]" @bind="allSeatsInPlane[92]" @onclick="(() => SelectSeat(seatNum16C))" />
+                                <label for="16C">16C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum16D = "16D";}
+                                <input type="checkbox" id="16D" disabled="@alreadyReservedSeats[93]" @bind="allSeatsInPlane[93]" @onclick="(() => SelectSeat(seatNum16D))" />
+                                <label for="16D">16D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum16E = "16E";}
+                                <input type="checkbox" id="16E" disabled="@alreadyReservedSeats[94]" @bind="allSeatsInPlane[94]" @onclick="(() => SelectSeat(seatNum16E))" />
+                                <label for="16E">16E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum16F = "16F";}
+                                <input type="checkbox" id="16F" disabled="@alreadyReservedSeats[95]" @bind="allSeatsInPlane[95]" @onclick="(() => SelectSeat(seatNum16F))" />
+                                <label for="16F">16F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--17">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum17A = "17A";}
+                                <input type="checkbox" id="17A" disabled="@alreadyReservedSeats[96]" @bind="allSeatsInPlane[96]" @onclick="(() => SelectSeat(seatNum17A))" />
+                                <label for="17A">17A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum17B = "17B";}
+                                <input type="checkbox" id="17B" disabled="@alreadyReservedSeats[97]" @bind="allSeatsInPlane[97]" @onclick="(() => SelectSeat(seatNum17B))" />
+                                <label for="17B">17B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum17C = "17C";}
+                                <input type="checkbox" id="17C" disabled="@alreadyReservedSeats[98]" @bind="allSeatsInPlane[98]" @onclick="(() => SelectSeat(seatNum17C))" />
+                                <label for="17C">17C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum17D = "17D";}
+                                <input type="checkbox" id="17D" disabled="@alreadyReservedSeats[99]" @bind="allSeatsInPlane[99]" @onclick="(() => SelectSeat(seatNum17D))" />
+                                <label for="17D">17D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum17E = "17E";}
+                                <input type="checkbox" id="17E" disabled="@alreadyReservedSeats[100]" @bind="allSeatsInPlane[100]" @onclick="(() => SelectSeat(seatNum17E))" />
+                                <label for="17E">17E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum17F = "17F";}
+                                <input type="checkbox" id="17F" disabled="@alreadyReservedSeats[101]" @bind="allSeatsInPlane[101]" @onclick="(() => SelectSeat(seatNum17F))" />
+                                <label for="17F">17F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--18">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum18A = "18A";}
+                                <input type="checkbox" id="18A" disabled="@alreadyReservedSeats[102]" @bind="allSeatsInPlane[102]" @onclick="(() => SelectSeat(seatNum18A))" />
+                                <label for="18A">18A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum18B = "18B";}
+                                <input type="checkbox" id="18B" disabled="@alreadyReservedSeats[103]" @bind="allSeatsInPlane[103]" @onclick="(() => SelectSeat(seatNum18B))" />
+                                <label for="18B">18B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum18C = "18C";}
+                                <input type="checkbox" id="18C" disabled="@alreadyReservedSeats[104]" @bind="allSeatsInPlane[104]" @onclick="(() => SelectSeat(seatNum18C))" />
+                                <label for="18C">18C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum18D = "18D";}
+                                <input type="checkbox" id="18D" disabled="@alreadyReservedSeats[105]" @bind="allSeatsInPlane[105]" @onclick="(() => SelectSeat(seatNum18D))" />
+                                <label for="18D">18D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum18E = "18E";}
+                                <input type="checkbox" id="18E" disabled="@alreadyReservedSeats[106]" @bind="allSeatsInPlane[106]" @onclick="(() => SelectSeat(seatNum18E))" />
+                                <label for="18E">18E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum18F = "18F";}
+                                <input type="checkbox" id="18F" disabled="@alreadyReservedSeats[107]" @bind="allSeatsInPlane[107]" @onclick="(() => SelectSeat(seatNum18F))" />
+                                <label for="18F">18F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--19">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum19A = "19A";}
+                                <input type="checkbox" id="19A" disabled="@alreadyReservedSeats[108]" @bind="allSeatsInPlane[108]" @onclick="(() => SelectSeat(seatNum19A))" />
+                                <label for="19A">19A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum19B = "19B";}
+                                <input type="checkbox" id="19B" disabled="@alreadyReservedSeats[109]" @bind="allSeatsInPlane[109]" @onclick="(() => SelectSeat(seatNum19B))" />
+                                <label for="19B">19B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum19C = "19C";}
+                                <input type="checkbox" id="19C" disabled="@alreadyReservedSeats[110]" @bind="allSeatsInPlane[110]" @onclick="(() => SelectSeat(seatNum19C))" />
+                                <label for="19C">19C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum19D = "19D";}
+                                <input type="checkbox" id="19D" disabled="@alreadyReservedSeats[111]" @bind="allSeatsInPlane[111]" @onclick="(() => SelectSeat(seatNum19D))" />
+                                <label for="19D">19D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum19E = "19E";}
+                                <input type="checkbox" id="19E" disabled="@alreadyReservedSeats[112]" @bind="allSeatsInPlane[112]" @onclick="(() => SelectSeat(seatNum19E))" />
+                                <label for="19E">19E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum19F = "19F";}
+                                <input type="checkbox" id="19F" disabled="@alreadyReservedSeats[113]" @bind="allSeatsInPlane[113]" @onclick="(() => SelectSeat(seatNum19F))" />
+                                <label for="19F">19F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--20">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum20A = "20A";}
+                                <input type="checkbox" id="20A" disabled="@alreadyReservedSeats[114]" @bind="allSeatsInPlane[114]" @onclick="(() => SelectSeat(seatNum20A))" />
+                                <label for="20A">20A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum20B = "20B";}
+                                <input type="checkbox" id="20B" disabled="@alreadyReservedSeats[115]" @bind="allSeatsInPlane[115]" @onclick="(() => SelectSeat(seatNum20B))" />
+                                <label for="20B">20B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum20C = "20C";}
+                                <input type="checkbox" id="20C" disabled="@alreadyReservedSeats[116]" @bind="allSeatsInPlane[116]" @onclick="(() => SelectSeat(seatNum20C))" />
+                                <label for="20C">20C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum20D = "20D";}
+                                <input type="checkbox" id="20D" disabled="@alreadyReservedSeats[117]" @bind="allSeatsInPlane[117]" @onclick="(() => SelectSeat(seatNum20D))" />
+                                <label for="20D">20D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum20E = "20E";}
+                                <input type="checkbox" id="20E" disabled="@alreadyReservedSeats[118]" @bind="allSeatsInPlane[118]" @onclick="(() => SelectSeat(seatNum20E))" />
+                                <label for="20E">20E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum20F = "20F";}
+                                <input type="checkbox" id="20F" disabled="@alreadyReservedSeats[119]" @bind="allSeatsInPlane[119]" @onclick="(() => SelectSeat(seatNum20F))" />
+                                <label for="20F">20F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--21">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum21A = "21A";}
+                                <input type="checkbox" id="21A" disabled="@alreadyReservedSeats[120]" @bind="allSeatsInPlane[120]" @onclick="(() => SelectSeat(seatNum21A))" />
+                                <label for="21A">21A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum21B = "21B";}
+                                <input type="checkbox" id="21B" disabled="@alreadyReservedSeats[121]" @bind="allSeatsInPlane[121]" @onclick="(() => SelectSeat(seatNum21B))" />
+                                <label for="21B">21B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum21C = "21C";}
+                                <input type="checkbox" id="21C" disabled="@alreadyReservedSeats[122]" @bind="allSeatsInPlane[122]" @onclick="(() => SelectSeat(seatNum21C))" />
+                                <label for="21C">21C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum21D = "21D";}
+                                <input type="checkbox" id="21D" disabled="@alreadyReservedSeats[123]" @bind="allSeatsInPlane[123]" @onclick="(() => SelectSeat(seatNum21D))" />
+                                <label for="21D">21D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum21E = "21E";}
+                                <input type="checkbox" id="21E" disabled="@alreadyReservedSeats[124]" @bind="allSeatsInPlane[124]" @onclick="(() => SelectSeat(seatNum21E))" />
+                                <label for="21E">21E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum21F = "21F";}
+                                <input type="checkbox" id="21F" disabled="@alreadyReservedSeats[125]" @bind="allSeatsInPlane[125]" @onclick="(() => SelectSeat(seatNum21F))" />
+                                <label for="21F">21F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--22">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum22A = "22A";}
+                                <input type="checkbox" id="22A" disabled="@alreadyReservedSeats[126]" @bind="allSeatsInPlane[126]" @onclick="(() => SelectSeat(seatNum22A))" />
+                                <label for="22A">22A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum22B = "22B";}
+                                <input type="checkbox" id="22B" disabled="@alreadyReservedSeats[127]" @bind="allSeatsInPlane[127]" @onclick="(() => SelectSeat(seatNum22B))" />
+                                <label for="22B">22B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum22C = "22C";}
+                                <input type="checkbox" id="22C" disabled="@alreadyReservedSeats[128]" @bind="allSeatsInPlane[128]" @onclick="(() => SelectSeat(seatNum22C))" />
+                                <label for="22C">22C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum22D = "22D";}
+                                <input type="checkbox" id="22D" disabled="@alreadyReservedSeats[129]" @bind="allSeatsInPlane[129]" @onclick="(() => SelectSeat(seatNum22D))" />
+                                <label for="22D">22D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum22E = "22E";}
+                                <input type="checkbox" id="22E" disabled="@alreadyReservedSeats[130]" @bind="allSeatsInPlane[130]" @onclick="(() => SelectSeat(seatNum22E))" />
+                                <label for="22E">22E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum22F = "22F";}
+                                <input type="checkbox" id="22F" disabled="@alreadyReservedSeats[131]" @bind="allSeatsInPlane[131]" @onclick="(() => SelectSeat(seatNum22F))" />
+                                <label for="22F">22F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--23">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum23A = "23A";}
+                                <input type="checkbox" id="23A" disabled="@alreadyReservedSeats[132]" @bind="allSeatsInPlane[132]" @onclick="(() => SelectSeat(seatNum23A))" />
+                                <label for="23A">23A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum23B = "23B";}
+                                <input type="checkbox" id="23B" disabled="@alreadyReservedSeats[133]" @bind="allSeatsInPlane[133]" @onclick="(() => SelectSeat(seatNum23B))" />
+                                <label for="23B">23B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum23C = "23C";}
+                                <input type="checkbox" id="23C" disabled="@alreadyReservedSeats[134]" @bind="allSeatsInPlane[134]" @onclick="(() => SelectSeat(seatNum23C))" />
+                                <label for="23C">23C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum23D = "23D";}
+                                <input type="checkbox" id="23D" disabled="@alreadyReservedSeats[135]" @bind="allSeatsInPlane[135]" @onclick="(() => SelectSeat(seatNum23D))" />
+                                <label for="23D">23D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum23E = "23E";}
+                                <input type="checkbox" id="23E" disabled="@alreadyReservedSeats[136]" @bind="allSeatsInPlane[136]" @onclick="(() => SelectSeat(seatNum23E))" />
+                                <label for="23E">23E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum23F = "23F";}
+                                <input type="checkbox" id="23F" disabled="@alreadyReservedSeats[137]" @bind="allSeatsInPlane[137]" @onclick="(() => SelectSeat(seatNum23F))" />
+                                <label for="23F">23F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--24">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum24A = "24A";}
+                                <input type="checkbox" id="24A" disabled="@alreadyReservedSeats[138]" @bind="allSeatsInPlane[138]" @onclick="(() => SelectSeat(seatNum24A))" />
+                                <label for="24A">24A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum24B = "24B";}
+                                <input type="checkbox" id="24B" disabled="@alreadyReservedSeats[139]" @bind="allSeatsInPlane[139]" @onclick="(() => SelectSeat(seatNum24B))" />
+                                <label for="24B">24B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum24C = "24C";}
+                                <input type="checkbox" id="24C" disabled="@alreadyReservedSeats[140]" @bind="allSeatsInPlane[140]" @onclick="(() => SelectSeat(seatNum24C))" />
+                                <label for="24C">24C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum24D = "24D";}
+                                <input type="checkbox" id="24D" disabled="@alreadyReservedSeats[141]" @bind="allSeatsInPlane[141]" @onclick="(() => SelectSeat(seatNum24D))" />
+                                <label for="24D">24D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum24E = "24E";}
+                                <input type="checkbox" id="24E" disabled="@alreadyReservedSeats[142]" @bind="allSeatsInPlane[142]" @onclick="(() => SelectSeat(seatNum24E))" />
+                                <label for="24E">24E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum24F = "24F";}
+                                <input type="checkbox" id="24F" disabled="@alreadyReservedSeats[143]" @bind="allSeatsInPlane[143]" @onclick="(() => SelectSeat(seatNum24F))" />
+                                <label for="24F">24F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--25">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum25A = "25A";}
+                                <input type="checkbox" id="25A" disabled="@alreadyReservedSeats[144]" @bind="allSeatsInPlane[144]" @onclick="(() => SelectSeat(seatNum25A))" />
+                                <label for="25A">25A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum25B = "25B";}
+                                <input type="checkbox" id="25B" disabled="@alreadyReservedSeats[145]" @bind="allSeatsInPlane[145]" @onclick="(() => SelectSeat(seatNum25B))" />
+                                <label for="25B">25B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum25C = "25C";}
+                                <input type="checkbox" id="25C" disabled="@alreadyReservedSeats[146]" @bind="allSeatsInPlane[146]" @onclick="(() => SelectSeat(seatNum25C))" />
+                                <label for="25C">25C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum25D = "25D";}
+                                <input type="checkbox" id="25D" disabled="@alreadyReservedSeats[147]" @bind="allSeatsInPlane[147]" @onclick="(() => SelectSeat(seatNum25D))" />
+                                <label for="25D">25D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum25E = "25E";}
+                                <input type="checkbox" id="25E" disabled="@alreadyReservedSeats[148]" @bind="allSeatsInPlane[148]" @onclick="(() => SelectSeat(seatNum25E))" />
+                                <label for="25E">25E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum25F = "25F";}
+                                <input type="checkbox" id="25F" disabled="@alreadyReservedSeats[149]" @bind="allSeatsInPlane[149]" @onclick="(() => SelectSeat(seatNum25F))" />
+                                <label for="25F">25F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--26">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum26A = "26A";}
+                                <input type="checkbox" id="26A" disabled="@alreadyReservedSeats[150]" @bind="allSeatsInPlane[150]" @onclick="(() => SelectSeat(seatNum26A))" />
+                                <label for="26A">26A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum26B = "26B";}
+                                <input type="checkbox" id="26B" disabled="@alreadyReservedSeats[151]" @bind="allSeatsInPlane[151]" @onclick="(() => SelectSeat(seatNum26B))" />
+                                <label for="26B">26B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum26C = "26C";}
+                                <input type="checkbox" id="26C" disabled="@alreadyReservedSeats[152]" @bind="allSeatsInPlane[152]" @onclick="(() => SelectSeat(seatNum26C))" />
+                                <label for="26C">26C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum26D = "26D";}
+                                <input type="checkbox" id="26D" disabled="@alreadyReservedSeats[153]" @bind="allSeatsInPlane[153]" @onclick="(() => SelectSeat(seatNum26D))" />
+                                <label for="26D">26D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum26E = "26E";}
+                                <input type="checkbox" id="26E" disabled="@alreadyReservedSeats[154]" @bind="allSeatsInPlane[154]" @onclick="(() => SelectSeat(seatNum26E))" />
+                                <label for="26E">26E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum26F = "26F";}
+                                <input type="checkbox" id="26F" disabled="@alreadyReservedSeats[155]" @bind="allSeatsInPlane[155]" @onclick="(() => SelectSeat(seatNum26F))" />
+                                <label for="26F">26F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--27">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum27A = "27A";}
+                                <input type="checkbox" id="27A" disabled="@alreadyReservedSeats[156]" @bind="allSeatsInPlane[156]" @onclick="(() => SelectSeat(seatNum27A))" />
+                                <label for="27A">27A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum27B = "27B";}
+                                <input type="checkbox" id="27B" disabled="@alreadyReservedSeats[157]" @bind="allSeatsInPlane[157]" @onclick="(() => SelectSeat(seatNum27B))" />
+                                <label for="27B">27B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum27C = "27C";}
+                                <input type="checkbox" id="27C" disabled="@alreadyReservedSeats[158]" @bind="allSeatsInPlane[158]" @onclick="(() => SelectSeat(seatNum27C))" />
+                                <label for="27C">27C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum27D = "27D";}
+                                <input type="checkbox" id="27D" disabled="@alreadyReservedSeats[159]" @bind="allSeatsInPlane[159]" @onclick="(() => SelectSeat(seatNum27D))" />
+                                <label for="27D">27D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum27E = "27E";}
+                                <input type="checkbox" id="27E" disabled="@alreadyReservedSeats[160]" @bind="allSeatsInPlane[160]" @onclick="(() => SelectSeat(seatNum27E))" />
+                                <label for="27E">27E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum27F = "27F";}
+                                <input type="checkbox" id="27F" disabled="@alreadyReservedSeats[161]" @bind="allSeatsInPlane[161]" @onclick="(() => SelectSeat(seatNum27F))" />
+                                <label for="27F">27F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--28">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum28A = "28A";}
+                                <input type="checkbox" id="28A" disabled="@alreadyReservedSeats[162]" @bind="allSeatsInPlane[162]" @onclick="(() => SelectSeat(seatNum28A))" />
+                                <label for="28A">28A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum28B = "28B";}
+                                <input type="checkbox" id="28B" disabled="@alreadyReservedSeats[163]" @bind="allSeatsInPlane[163]" @onclick="(() => SelectSeat(seatNum28B))" />
+                                <label for="28B">28B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum28C = "28C";}
+                                <input type="checkbox" id="28C" disabled="@alreadyReservedSeats[164]" @bind="allSeatsInPlane[164]" @onclick="(() => SelectSeat(seatNum28C))" />
+                                <label for="28C">28C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum28D = "28D";}
+                                <input type="checkbox" id="28D" disabled="@alreadyReservedSeats[165]" @bind="allSeatsInPlane[165]" @onclick="(() => SelectSeat(seatNum28D))" />
+                                <label for="28D">28D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum28E = "28E";}
+                                <input type="checkbox" id="28E" disabled="@alreadyReservedSeats[166]" @bind="allSeatsInPlane[166]" @onclick="(() => SelectSeat(seatNum28E))" />
+                                <label for="28E">28E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum28F = "28F";}
+                                <input type="checkbox" id="28F" disabled="@alreadyReservedSeats[167]" @bind="allSeatsInPlane[167]" @onclick="(() => SelectSeat(seatNum28F))" />
+                                <label for="28F">28F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--29">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum29A = "29A";}
+                                <input type="checkbox" id="29A" disabled="@alreadyReservedSeats[168]" @bind="allSeatsInPlane[168]" @onclick="(() => SelectSeat(seatNum29A))" />
+                                <label for="29A">29A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum29B = "29B";}
+                                <input type="checkbox" id="29B" disabled="@alreadyReservedSeats[169]" @bind="allSeatsInPlane[169]" @onclick="(() => SelectSeat(seatNum29B))" />
+                                <label for="29B">29B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum29C = "29C";}
+                                <input type="checkbox" id="29C" disabled="@alreadyReservedSeats[170]" @bind="allSeatsInPlane[170]" @onclick="(() => SelectSeat(seatNum29C))" />
+                                <label for="29C">29C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum29D = "29D";}
+                                <input type="checkbox" id="29D" disabled="@alreadyReservedSeats[171]" @bind="allSeatsInPlane[171]" @onclick="(() => SelectSeat(seatNum29D))" />
+                                <label for="29D">29D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum29E = "29E";}
+                                <input type="checkbox" id="29E" disabled="@alreadyReservedSeats[172]" @bind="allSeatsInPlane[172]" @onclick="(() => SelectSeat(seatNum29E))" />
+                                <label for="29E">29E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum29F = "29F";}
+                                <input type="checkbox" id="29F" disabled="@alreadyReservedSeats[173]" @bind="allSeatsInPlane[173]" @onclick="(() => SelectSeat(seatNum29F))" />
+                                <label for="29F">29F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--30">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum30A = "30A";}
+                                <input type="checkbox" id="30A" disabled="@alreadyReservedSeats[174]" @bind="allSeatsInPlane[174]" @onclick="(() => SelectSeat(seatNum30A))" />
+                                <label for="30A">30A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum30B = "30B";}
+                                <input type="checkbox" id="30B" disabled="@alreadyReservedSeats[175]" @bind="allSeatsInPlane[175]" @onclick="(() => SelectSeat(seatNum30B))" />
+                                <label for="30B">30B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum30C = "30C";}
+                                <input type="checkbox" id="30C" disabled="@alreadyReservedSeats[176]" @bind="allSeatsInPlane[176]" @onclick="(() => SelectSeat(seatNum30C))" />
+                                <label for="30C">30C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum30D = "30D";}
+                                <input type="checkbox" id="30D" disabled="@alreadyReservedSeats[177]" @bind="allSeatsInPlane[177]" @onclick="(() => SelectSeat(seatNum30D))" />
+                                <label for="30D">30D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum30E = "30E";}
+                                <input type="checkbox" id="30E" disabled="@alreadyReservedSeats[178]" @bind="allSeatsInPlane[178]" @onclick="(() => SelectSeat(seatNum30E))" />
+                                <label for="30E">30E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum30F = "30F";}
+                                <input type="checkbox" id="30F" disabled="@alreadyReservedSeats[179]" @bind="allSeatsInPlane[179]" @onclick="(() => SelectSeat(seatNum30F))" />
+                                <label for="30F">30F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--31">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum31A = "31A";}
+                                <input type="checkbox" id="31A" disabled="@alreadyReservedSeats[180]" @bind="allSeatsInPlane[180]" @onclick="(() => SelectSeat(seatNum31A))" />
+                                <label for="31A">31A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum31B = "31B";}
+                                <input type="checkbox" id="31B" disabled="@alreadyReservedSeats[181]" @bind="allSeatsInPlane[181]" @onclick="(() => SelectSeat(seatNum31B))" />
+                                <label for="31B">31B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum31C = "31C";}
+                                <input type="checkbox" id="31C" disabled="@alreadyReservedSeats[182]" @bind="allSeatsInPlane[182]" @onclick="(() => SelectSeat(seatNum31C))" />
+                                <label for="31C">31C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum31D = "31D";}
+                                <input type="checkbox" id="31D" disabled="@alreadyReservedSeats[183]" @bind="allSeatsInPlane[183]" @onclick="(() => SelectSeat(seatNum31D))" />
+                                <label for="31D">31D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum31E = "31E";}
+                                <input type="checkbox" id="31E" disabled="@alreadyReservedSeats[184]" @bind="allSeatsInPlane[184]" @onclick="(() => SelectSeat(seatNum31E))" />
+                                <label for="31E">31E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum31F = "31F";}
+                                <input type="checkbox" id="31F" disabled="@alreadyReservedSeats[185]" @bind="allSeatsInPlane[185]" @onclick="(() => SelectSeat(seatNum31F))" />
+                                <label for="31F">31F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--32">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum32A = "32A";}
+                                <input type="checkbox" id="32A" disabled="@alreadyReservedSeats[186]" @bind="allSeatsInPlane[186]" @onclick="(() => SelectSeat(seatNum32A))" />
+                                <label for="32A">32A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum32B = "32B";}
+                                <input type="checkbox" id="32B" disabled="@alreadyReservedSeats[187]" @bind="allSeatsInPlane[187]" @onclick="(() => SelectSeat(seatNum32B))" />
+                                <label for="32B">32B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum32C = "32C";}
+                                <input type="checkbox" id="32C" disabled="@alreadyReservedSeats[188]" @bind="allSeatsInPlane[188]" @onclick="(() => SelectSeat(seatNum32C))" />
+                                <label for="32C">32C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum32D = "32D";}
+                                <input type="checkbox" id="32D" disabled="@alreadyReservedSeats[189]" @bind="allSeatsInPlane[189]" @onclick="(() => SelectSeat(seatNum32D))" />
+                                <label for="32D">32D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum32E = "32E";}
+                                <input type="checkbox" id="32E" disabled="@alreadyReservedSeats[190]" @bind="allSeatsInPlane[190]" @onclick="(() => SelectSeat(seatNum32E))" />
+                                <label for="32E">32E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum32F = "32F";}
+                                <input type="checkbox" id="32F" disabled="@alreadyReservedSeats[191]" @bind="allSeatsInPlane[191]" @onclick="(() => SelectSeat(seatNum32F))" />
+                                <label for="32F">32F</label>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="row--33">
+                        <ol class="seats" type="A">
+                            <li class="seat">
+                                @{string seatNum33A = "33A";}
+                                <input type="checkbox" id="33A" disabled="@alreadyReservedSeats[192]" @bind="allSeatsInPlane[192]" @onclick="(() => SelectSeat(seatNum33A))" />
+                                <label for="33A">33A</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum33B = "33B";}
+                                <input type="checkbox" id="33B" disabled="@alreadyReservedSeats[193]" @bind="allSeatsInPlane[193]" @onclick="(() => SelectSeat(seatNum33B))" />
+                                <label for="33B">33B</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum33C = "33C";}
+                                <input type="checkbox" id="33C" disabled="@alreadyReservedSeats[194]" @bind="allSeatsInPlane[194]" @onclick="(() => SelectSeat(seatNum33C))" />
+                                <label for="33C">33C</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum33D = "33D";}
+                                <input type="checkbox" id="33D" disabled="@alreadyReservedSeats[195]" @bind="allSeatsInPlane[195]" @onclick="(() => SelectSeat(seatNum33D))" />
+                                <label for="33D">33D</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum33E = "33E";}
+                                <input type="checkbox" id="33E" disabled="@alreadyReservedSeats[196]" @bind="allSeatsInPlane[196]" @onclick="(() => SelectSeat(seatNum33E))" />
+                                <label for="33E">33E</label>
+                            </li>
+                            <li class="seat">
+                                @{string seatNum33F = "33F";}
+                                <input type="checkbox" id="33F" disabled="@alreadyReservedSeats[197]" @bind="allSeatsInPlane[197]" @onclick="(() => SelectSeat(seatNum33F))" />
+                                <label for="33F">33F</label>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
+                <div class="exit exit--back fuselage">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4 p-5 position-relative">
+            <div class="position-sticky pt-2" style="top:20px;">
+
+                <div class="row d-flex align-items-center customer-seats-container">
+
+                    <h3>Passengers</h3>
+                    <span>Seat</span>
+
+                </div>
+
+                @foreach (Passenger p in passengers)
+                {<div class="row d-flex align-items-center customer-seats-container borders my-4">
+                        <div class="display-inline" style="width: 82%;">
+                            <button @onclick="() => selectPassenger(p)" class="btn btn-primary btn-rounded mr-2">@p.firstname</button>
+
+
+                        </div>
+                        <span class="seat-position">@getSeatFunc(p)</span>
+
+                    </div>
+
+                }
+                <div class="row justify-content-center">
+                    <button @onclick="AddSeatReservation" class="btn btn-primary btn-rounded">Add reservation</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@code {
+    private List<bool>
+        allSeatsInPlane = new List<bool>
+            ();
+    private List<bool>
+        alreadyReservedSeats = new List<bool>
+            ();
+    private int flightID;
+    private string seat0 = "A";
+    private string seat1 = "A";
+    private string seat2 = "A";
+    private string seat3 = "A";
+    private string seat4 = "A";
+    private string seat5 = "A";
+    private string seat6 = "A";
+    private string seat7 = "A";
+    private string seat8 = "A";
+    private string seat9 = "A";
+    private int index = 0;
+    private bool dis = false;
+
+    private Passenger selectedPassenger = new Passenger();
+    private List<Passenger>
+        passengers = new List<Passenger>
+            ();
+    List<int>
+        tickets;
+
+    List<string>
+        finalSeats = new List<string>
+            ();
+
+    private string error;
+
+    private string getSeatFunc(Passenger passenger)
+    {
+        for (int i = 0; i < passengers.Count; i++)
+        {
+            if (passenger.Equals(passengers[i]))
+            {
+                return getSeat(i);
+            }
+        }
+        return "";
+    }
+
+    private string getSeat(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                return seat0;
+            case 1:
+                return seat1;
+            case 2:
+                return seat2;
+            case 3:
+                return seat3;
+            case 4:
+                return seat4;
+            case 5:
+                return seat5;
+            case 6:
+                return seat6;
+            case 7:
+                return seat7;
+            case 8:
+                return seat8;
+            case 9:
+                return seat9;
+        }
+        return "";
+    }
+
+    protected override void OnInitialized()
+    {
+        tickets = bookingService.getAlreadyReservedSeats();
+        flightID = bookingService.getFlightID();
+        for (int i = 0; i < 199; i++)
+        {
+            alreadyReservedSeats.Add(false);
+        }
+
+        foreach (int t in tickets)
+        {
+            alreadyReservedSeats[t - 1] = true;
+        }
+        for (int i = 0; i < 199; i++)
+        {
+            allSeatsInPlane.Add(false);
+        }
+
+        passengers = new List<Passenger>
+            (bookingService.getPassengers());
+    }
+    private void selectPassenger(Passenger passenger)
+    {
+        selectedPassenger = passenger;
+        for (int i = 0; i < passengers.Count; i++)
+        {
+            if (passengers[i].passportNumber == selectedPassenger.passportNumber)
+            {
+                index = i;
+            }
+        }
+    }
+    private void AddSeatReservation()
+    {
+        //Check if everyone chose seat
+
+        if (CheckEachSeat())
+        {
+            AddValidSeats();
+            bookingService.SaveSeatInfo(finalSeats, 50);
+            navigationManager.NavigateTo("/overview");
+        }
+        else
+        {
+            error = "Please choose seat for all the passengers";
+        }
+
+    }
+    private void AddValidSeats()
+    {
+        switch (passengers.Count)
+        {
+            case 1:
+                finalSeats.Add(seat0);
+                break;
+            case 2:
+                finalSeats.Add(seat0);
+                finalSeats.Add(seat1);
+                break;
+            case 3:
+                finalSeats.Add(seat0);
+                finalSeats.Add(seat1);
+                finalSeats.Add(seat2);
+                break;
+            case 4:
+                finalSeats.Add(seat0);
+                finalSeats.Add(seat1);
+                finalSeats.Add(seat2);
+                finalSeats.Add(seat3);
+                break;
+            case 5:
+                finalSeats.Add(seat0);
+                finalSeats.Add(seat1);
+                finalSeats.Add(seat2);
+                finalSeats.Add(seat3);
+                finalSeats.Add(seat4);
+                break;
+            case 6:
+                finalSeats.Add(seat0);
+                finalSeats.Add(seat1);
+                finalSeats.Add(seat2);
+                finalSeats.Add(seat3);
+                finalSeats.Add(seat4);
+                finalSeats.Add(seat5);
+                break;
+            case 7:
+                finalSeats.Add(seat0);
+                finalSeats.Add(seat1);
+                finalSeats.Add(seat2);
+                finalSeats.Add(seat3);
+                finalSeats.Add(seat4);
+                finalSeats.Add(seat5);
+                finalSeats.Add(seat6);
+                break;
+            case 8:
+                finalSeats.Add(seat0);
+                finalSeats.Add(seat1);
+                finalSeats.Add(seat2);
+                finalSeats.Add(seat3);
+                finalSeats.Add(seat4);
+                finalSeats.Add(seat5);
+                finalSeats.Add(seat6);
+                finalSeats.Add(seat7);
+                break;
+            case 9:
+                finalSeats.Add(seat0);
+                finalSeats.Add(seat1);
+                finalSeats.Add(seat2);
+                finalSeats.Add(seat3);
+                finalSeats.Add(seat4);
+                finalSeats.Add(seat5);
+                finalSeats.Add(seat6);
+                finalSeats.Add(seat7);
+                finalSeats.Add(seat8);
+                break;
+            case 10:
+                finalSeats.Add(seat0);
+                finalSeats.Add(seat1);
+                finalSeats.Add(seat2);
+                finalSeats.Add(seat3);
+                finalSeats.Add(seat4);
+                finalSeats.Add(seat5);
+                finalSeats.Add(seat6);
+                finalSeats.Add(seat7);
+                finalSeats.Add(seat8);
+                finalSeats.Add(seat9);
+                break;
+        }
+    }
+    private void SelectSeat(string seatnum)
+    {
+        switch (index)
+        {
+            case 0:
+                if (CheckSeat(seatnum, 0))
+                {
+                    if (seat0 != "A")
+                    {
+                        int seatindex = CalculateSeat(seat0);
+                        allSeatsInPlane[seatindex - 1] = false;
+                    }
+                    seat0 = seatnum;
+                    int newSeatIndex = CalculateSeat(seat0);
+                    allSeatsInPlane[newSeatIndex - 1] = true;
+                }
+                else
+                {
+                    int seatindex = CalculateSeat(seat0);
+                    allSeatsInPlane[seatindex - 1] = true;
+                    error = "This seat is already chosen by another passenger";
+                }
+                break;
+            case 1:
+                if (CheckSeat(seatnum, 1))
+                {
+                    if (seat1 != "A")
+                    {
+                        int seatindex = CalculateSeat(seat1);
+                        allSeatsInPlane[seatindex - 1] = false;
+                    }
+                    seat1 = seatnum;
+                    int newSeatIndex = CalculateSeat(seat1);
+                    allSeatsInPlane[newSeatIndex - 1] = true;
+                }
+                else
+                {
+                    int seatindex = CalculateSeat(seat0);
+                    allSeatsInPlane[seatindex - 1] = true;
+                    error = "This seat is already chosen by another passenger";
+                }
+                break;
+            case 2:
+                if (CheckSeat(seatnum, 2))
+                {
+                    if (seat2 != "A")
+                    {
+                        int seatindex = CalculateSeat(seat2);
+                        allSeatsInPlane[seatindex - 1] = false;
+                    }
+                    seat2 = seatnum;
+                    int newSeatIndex = CalculateSeat(seat2);
+                    allSeatsInPlane[newSeatIndex - 1] = true;
+                }
+                else
+                {
+                    int seatindex = CalculateSeat(seat0);
+                    allSeatsInPlane[seatindex - 1] = true;
+                    error = "This seat is already chosen by another passenger";
+                }
+                break;
+            case 3:
+                if (CheckSeat(seatnum, 3))
+                {
+                    if (seat3 != "A")
+                    {
+                        int seatindex = CalculateSeat(seat3);
+                        allSeatsInPlane[seatindex - 1] = false;
+                    }
+                    seat3 = seatnum;
+                    int newSeatIndex = CalculateSeat(seat3);
+                    allSeatsInPlane[newSeatIndex - 1] = true;
+                }
+                else
+                {
+                    int seatindex = CalculateSeat(seat0);
+                    allSeatsInPlane[seatindex - 1] = true;
+                    error = "This seat is already chosen by another passenger";
+                }
+                break;
+            case 4:
+                if (CheckSeat(seatnum, 4))
+                {
+                    if (seat4 != "A")
+                    {
+                        int seatindex = CalculateSeat(seat4);
+                        allSeatsInPlane[seatindex - 1] = false;
+                    }
+                    seat4 = seatnum;
+                    int newSeatIndex = CalculateSeat(seat4);
+                    allSeatsInPlane[newSeatIndex - 1] = true;
+                }
+                else
+                {
+                    int seatindex = CalculateSeat(seat0);
+                    allSeatsInPlane[seatindex - 1] = true;
+                    error = "This seat is already chosen by another passenger";
+                }
+                break;
+            case 5:
+                if (CheckSeat(seatnum, 5))
+                {
+                    if (seat5 != "A")
+                    {
+                        int seatindex = CalculateSeat(seat5);
+                        allSeatsInPlane[seatindex - 1] = false;
+                    }
+                    seat5 = seatnum;
+                    int newSeatIndex = CalculateSeat(seat5);
+                    allSeatsInPlane[newSeatIndex - 1] = true;
+                }
+                else
+                {
+                    int seatindex = CalculateSeat(seat0);
+                    allSeatsInPlane[seatindex - 1] = true;
+                    error = "This seat is already chosen by another passenger";
+                }
+                break;
+            case 6:
+                if (CheckSeat(seatnum, 6))
+                {
+                    if (seat6 != "A")
+                    {
+                        int seatindex = CalculateSeat(seat6);
+                        allSeatsInPlane[seatindex - 1] = false;
+                    }
+                    seat6 = seatnum;
+                    int newSeatIndex = CalculateSeat(seat6);
+                    allSeatsInPlane[newSeatIndex - 1] = true;
+                }
+                else
+                {
+                    int seatindex = CalculateSeat(seat0);
+                    allSeatsInPlane[seatindex - 1] = true;
+                    error = "This seat is already chosen by another passenger";
+                }
+                break;
+            case 7:
+                if (CheckSeat(seatnum, 7))
+                {
+                    if (seat7 != "A")
+                    {
+                        int seatindex = CalculateSeat(seat7);
+                        allSeatsInPlane[seatindex - 1] = false;
+                    }
+                    seat7 = seatnum;
+                    int newSeatIndex = CalculateSeat(seat7);
+                    allSeatsInPlane[newSeatIndex - 1] = true;
+                }
+                else
+                {
+                    int seatindex = CalculateSeat(seat0);
+                    allSeatsInPlane[seatindex - 1] = true;
+                    error = "This seat is already chosen by another passenger";
+                }
+                break;
+            case 8:
+                if (CheckSeat(seatnum, 8))
+                {
+                    if (seat8 != "A")
+                    {
+                        int seatindex = CalculateSeat(seat8);
+                        allSeatsInPlane[seatindex - 1] = false;
+                    }
+                    seat8 = seatnum;
+                    int newSeatIndex = CalculateSeat(seat8);
+                    allSeatsInPlane[newSeatIndex - 1] = true;
+                }
+                else
+                {
+                    int seatindex = CalculateSeat(seat0);
+                    allSeatsInPlane[seatindex - 1] = true;
+                    error = "This seat is already chosen by another passenger";
+                }
+                break;
+            case 9:
+                if (CheckSeat(seatnum, 9))
+                {
+                    if (seat1 != "A")
+                    {
+                        int seatindex = CalculateSeat(seat9);
+                        allSeatsInPlane[seatindex - 1] = false;
+                    }
+                    seat9 = seatnum;
+                    int newSeatIndex = CalculateSeat(seat9);
+                    allSeatsInPlane[newSeatIndex - 1] = true;
+                }
+                else
+                {
+                    int seatindex = CalculateSeat(seat0);
+                    allSeatsInPlane[seatindex - 1] = true;
+                    error = "This seat is already chosen by another passenger";
+                }
+                break;
+        }
+    }
+    private bool CheckSeat(string seatnum, int passenger)
+    {
+        bool result = true;
+        switch (passenger)
+        {
+            case 0:
+                if (seat1.Equals(seatnum) || seat2.Equals(seatnum) || seat3.Equals(seatnum) || seat4.Equals(seatnum) || seat5.Equals(seatnum) || seat6.Equals(seatnum) || seat7.Equals(seatnum) || seat8.Equals(seatnum) || seat9.Equals(seatnum))
+                {
+                    result = false;
+                }
+                break;
+            case 1:
+                if (seat0.Equals(seatnum) || seat2.Equals(seatnum) || seat3.Equals(seatnum) || seat4.Equals(seatnum) || seat5.Equals(seatnum) || seat6.Equals(seatnum) || seat7.Equals(seatnum) || seat8.Equals(seatnum) || seat9.Equals(seatnum))
+                {
+                    result = false;
+                }
+                break;
+            case 2:
+                if (seat1.Equals(seatnum) || seat0.Equals(seatnum) || seat3.Equals(seatnum) || seat4.Equals(seatnum) || seat5.Equals(seatnum) || seat6.Equals(seatnum) || seat7.Equals(seatnum) || seat8.Equals(seatnum) || seat9.Equals(seatnum))
+                {
+                    result = false;
+                }
+                break;
+            case 3:
+                if (seat1.Equals(seatnum) || seat2.Equals(seatnum) || seat0.Equals(seatnum) || seat4.Equals(seatnum) || seat5.Equals(seatnum) || seat6.Equals(seatnum) || seat7.Equals(seatnum) || seat8.Equals(seatnum) || seat9.Equals(seatnum))
+                {
+                    result = false;
+                }
+                break;
+            case 4:
+                if (seat1.Equals(seatnum) || seat2.Equals(seatnum) || seat3.Equals(seatnum) || seat0.Equals(seatnum) || seat5.Equals(seatnum) || seat6.Equals(seatnum) || seat7.Equals(seatnum) || seat8.Equals(seatnum) || seat9.Equals(seatnum))
+                {
+                    result = false;
+                }
+                break;
+            case 5:
+                if (seat1.Equals(seatnum) || seat2.Equals(seatnum) || seat3.Equals(seatnum) || seat4.Equals(seatnum) || seat0.Equals(seatnum) || seat6.Equals(seatnum) || seat7.Equals(seatnum) || seat8.Equals(seatnum) || seat9.Equals(seatnum))
+                {
+                    result = false;
+                }
+                break;
+            case 6:
+                if (seat1.Equals(seatnum) || seat2.Equals(seatnum) || seat3.Equals(seatnum) || seat4.Equals(seatnum) || seat5.Equals(seatnum) || seat0.Equals(seatnum) || seat7.Equals(seatnum) || seat8.Equals(seatnum) || seat9.Equals(seatnum))
+                {
+                    result = false;
+                }
+                break;
+            case 7:
+                if (seat1.Equals(seatnum) || seat2.Equals(seatnum) || seat3.Equals(seatnum) || seat4.Equals(seatnum) || seat5.Equals(seatnum) || seat6.Equals(seatnum) || seat0.Equals(seatnum) || seat8.Equals(seatnum) || seat9.Equals(seatnum))
+                {
+                    result = false;
+                }
+                break;
+            case 8:
+                if (seat1.Equals(seatnum) || seat2.Equals(seatnum) || seat3.Equals(seatnum) || seat4.Equals(seatnum) || seat5.Equals(seatnum) || seat6.Equals(seatnum) || seat7.Equals(seatnum) || seat0.Equals(seatnum) || seat9.Equals(seatnum))
+                {
+                    result = false;
+                }
+                break;
+            case 9:
+                if (seat1.Equals(seatnum) || seat2.Equals(seatnum) || seat3.Equals(seatnum) || seat4.Equals(seatnum) || seat5.Equals(seatnum) || seat6.Equals(seatnum) || seat7.Equals(seatnum) || seat8.Equals(seatnum) || seat0.Equals(seatnum))
+                {
+                    result = false;
+                }
+                break;
+        }
+        return result;
+    }
+    private int CalculateSeat(string seat)
+    {
+        if (seat.Length == 2)
+        {
+            int mid = seat.Length / 2;
+            String[] parts = { seat.Substring(0, mid), seat.Substring(mid) };
+            int number = Convert.ToInt32(parts[0]);
+            string character = parts[1];
+            return CalculateByNumberAndString(number, character);
+        }
+        else
+        {
+            String[] parts = { seat.Substring(0, 2), seat.Substring(2) };
+            int number = Convert.ToInt32(parts[0]);
+            string character = parts[1];
+            return CalculateByNumberAndString(number, character);
+        }
+    }
+    private int CalculateByNumberAndString(int number, string character)
+    {
+        int sum = number * 6;
+        switch (character)
+        {
+            case "A":
+                sum -= 5;
+                break;
+            case "B":
+                sum -= 4;
+                break;
+            case "C":
+                sum -= 3;
+                break;
+            case "D":
+                sum -= 2;
+                break;
+            case "E":
+                sum -= 1;
+                break;
+            case "F":
+                break;
+        }
+        return sum;
+    }
+    private bool CheckEachSeat()
+    {
+        List<string>
+            seats = new List<string>
+                ();
+        seats.Add(seat0);
+        seats.Add(seat1);
+        seats.Add(seat2);
+        seats.Add(seat3);
+        seats.Add(seat4);
+        seats.Add(seat5);
+        seats.Add(seat6);
+        seats.Add(seat7);
+        seats.Add(seat8);
+        seats.Add(seat9);
+
+        for (int i = 0; i < passengers.Count; i++)
+        {
+            if (seats[i] == "A")
+            {
+                //Error please choose a seat
+                return false;
+            }
+        }
+        return true;
+    }
+}

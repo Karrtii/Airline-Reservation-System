@@ -1,0 +1,30 @@
+﻿@page "/errorPage"
+@inject NavigationManager navigationManager
+
+<div class="section">
+    <div class="section-center">
+        <div class="container justify-content-center d-flex text-center">
+            <div class="card-error">
+                <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto; text-align:center;"
+                     class="rotate-vert-center ">
+                    <span class="cross ">:x:</span>
+                </div>
+                <h1>Error</h1>
+                <p>There was an error when choosing a seat.</p>
+                <p>Please try again</p>
+                <div class="row justify-content-center">
+                    <button class="yellow-btn" @onclick="GoBack">Go back</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private void GoBack() 
+    {
+        navigationManager.NavigateTo("/searchflight");
+    }
+
+}

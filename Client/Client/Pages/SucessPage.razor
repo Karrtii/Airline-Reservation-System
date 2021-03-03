@@ -1,0 +1,43 @@
+﻿@page "/success"
+@using System.Threading;
+@attribute [Authorize]
+@inject NavigationManager NavigationManager;
+
+<div class="section">
+    <div class="section-center">
+        <div class="container justify-content-center d-flex text-center">
+            <div class="card-success">
+                <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto; text-align:center;" class="rotate-vert-center ">
+                    <i class="checkmark ">✓</i>
+                </div>
+                <h1>Success</h1>
+                <p>Thank you for shopping with Blazing Flights! You can check your order in your profile.<br /> Have a blazing flight!</p>
+                <div class="row justify-content-between">
+
+                    <button class="btn btn-rounded btn-secondary" @onclick="GoToSearchFlight">Go home</button>
+
+
+                    <button class="btn btn-rounded btn-primary" @onclick="GoToMyFlights">Check the order</button>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@code {
+    private void GoToSearchFlight()
+    {
+        NavigationManager.NavigateTo("/searchflight");
+    }
+
+    private void GoToMyFlights()
+    {
+        NavigationManager.NavigateTo("/viewmyflights");
+    }
+}

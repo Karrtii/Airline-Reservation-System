@@ -1,0 +1,157 @@
+﻿@namespace AddLuggageService
+@using Client.Model;
+
+<EditForm EditContext="EC" class="d-flex">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="btn-group">
+
+        <label for="@buttons[0]" class="luggage-wrap luggage-card text-center">
+            <img src="/css/Assets/1024px-Icon_None.svg.png" class="suitcase" style="width:30%" ; />
+            <p>None</p>
+
+            <label class="b-contain">
+                <span></span>
+                <input type="checkbox" id="@buttons[0]" @bind="buttons[0]" @onclick="@OnLuggageTypeChangeNone" class="checkbox-effect checkbox-effect-4" />
+
+                <div class="b-input"></div>
+
+            </label>
+            <!--<input type="button" value="None" class="btn btn-primary btn-rounded" @onclick="OnLuggageTypeChangeNone" />-->
+        </label>
+
+        <label for="@buttons[1]" class="luggage-wrap luggage-card text-center">
+            <img src="/css/Assets/suitcase.png" class="suitcase" />
+            <p>Small 10kg</p>
+            <label class="b-contain">
+                <span></span>
+                <input type="checkbox" id="@buttons[1]" @bind="buttons[1]" @onclick="@OnLuggageTypeChangeSmall" class="checkbox-effect checkbox-effect-4" />
+                <div class="b-input"></div>
+
+            </label>
+
+            <!--<input type="button" class="btn btn-primary btn-rounded" @onclick="OnLuggageTypeChangeSmall" />-->
+        </label>
+
+        <label for="@buttons[2]" class="luggage-wrap luggage-card text-center">
+            <img src="/css/Assets/medium-suitcase.png" class="suitcase" />
+            <p>Medium 20kg</p>
+            <label class="b-contain">
+                <span></span>
+                <input type="checkbox" id="@buttons[2]" @bind="buttons[2]" @onclick="@OnLuggageTypeChangeMedium" class="checkbox-effect checkbox-effect-4" />
+                <div class="b-input"></div>
+
+            </label>
+
+            <!--<input type="button" class="btn btn-primary btn-rounded" @onclick="OnLuggageTypeChangeMedium" />-->
+        </label>
+
+        <label for="@buttons[3]" class="luggage-wrap luggage-card text-center">
+            <img src="/css/Assets/large-suitcase.png" class="suitcase" />
+            <p>Large 35kg</p>
+            <label class="b-contain">
+                <span></span>
+                <input type="checkbox" id="@buttons[3]" @bind="buttons[3]" @onclick="@OnLuggageTypeChangeLarge" />
+
+                <div class="b-input"></div>
+
+            </label>
+            <!--<input type="button" class="btn btn-primary btn-rounded"  @onclick="OnLuggageTypeChangeLarge" />-->
+        </label>
+    </div>
+
+</EditForm>
+
+
+
+
+
+
+
+@code {
+    [Parameter]
+    public Ticket luggageType { get; set; }
+    [Parameter]
+    public EventCallback<Ticket> luggageTypeChanged { get; set; }
+    List<bool> buttons = new List<bool>();
+
+    private EditContext EC { get; set; }
+
+    private Task OnLuggageTypeChange(ChangeEventArgs e)
+    {
+        return luggageTypeChanged.InvokeAsync(luggageType);
+    }
+
+    private void OnLuggageTypeChangeNone(MouseEventArgs e)
+    {
+        luggageType.price = 0;
+        luggageType.luggage = "None";
+        UnSelectAll(luggageType.price);
+    }
+    private void OnLuggageTypeChangeSmall(MouseEventArgs e)
+    {
+        luggageType.price = 75;
+        luggageType.luggage = "Small";
+        UnSelectAll(luggageType.price);
+    }
+    private void OnLuggageTypeChangeMedium(MouseEventArgs e)
+    {
+        luggageType.price = 100;
+        luggageType.luggage = "Medium";
+        UnSelectAll(luggageType.price);
+    }
+    private void OnLuggageTypeChangeLarge(MouseEventArgs e)
+    {
+        luggageType.price = 120;
+        luggageType.luggage = "Large";
+        UnSelectAll(luggageType.price);
+    }
+    protected override void OnInitialized()
+    {
+        EC = new EditContext(luggageType);
+
+        for (int i = 0; i < 4; i++)
+        {
+            buttons.Add(false);
+        }
+        buttons[0] = true;
+    }
+
+    private void UnSelectAll(int price)
+    {
+        switch (price)
+        {
+            case 0:
+                buttons[0] = true;
+                buttons[1] = false;
+                buttons[2] = false;
+                buttons[3] = false;
+                break;
+            case 75:
+                buttons[0] = false;
+                buttons[1] = true;
+                buttons[2] = false;
+                buttons[3] = false;
+                break;
+            case 100:
+                buttons[0] = false;
+                buttons[1] = false;
+                buttons[2] = true;
+                buttons[3] = false;
+                break;
+            case 120:
+                buttons[0] = false;
+                buttons[1] = false;
+                buttons[2] = false;
+                buttons[3] = true;
+                break;
+        }
+    }
+
+    public bool ValidateLuggage()
+    {
+        return EC.Validate();
+    }
+
+
+}

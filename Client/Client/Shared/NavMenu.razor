@@ -1,0 +1,133 @@
+﻿@using Client.Authentication
+@using Client.Data
+@using Client.Model
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IBookingService bookingService
+@inject IUserService UserService
+
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm  box-shadow">
+    <div class="container">
+        <img src="/css/Assets/logo.png" class="logo" />
+        <button class="navbar-toggler" @onclick="ToggleNavMenu" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars" style="font-size:15px;"></i>
+
+
+        </button>
+        <div class="@NavMenuCssClass navbar-collapse d-sm-inline-flex flex-sm-row-reverse" @onclick="CollapseNavMenu">
+            <ul class="navbar-nav flex-grow-1 justify-content-end">
+                <AuthorizeView Policy="MustBeCustomer">
+                    <li class="nav-item px-3 pt-0">
+                        <NavLink class="nav-link" href="searchflight" Match="NavLinkMatch.All">
+                            <span class="oi oi-home" aria-hidden="true"></span> Home
+                        </NavLink>
+                    </li>
+
+                    <li class="nav-item px-3 pt-0">
+
+                        <div class="dropdown text-white ">
+                            <a style="cursor:pointer">
+                                <span class="oi oi-plus" aria-hidden="true"></span>My Profile
+                            </a>
+
+                            <div class="dropdown-content">
+                                <a href="viewmyflights">Overview</a>
+                                <a href="finishedviewmyflights">Finished flights</a>
+                                <a href="edituser">Edit profile</a>
+                                <a href="login" class="border-top" @onclick="PerformLogout">Log out</a>
+                            </div>
+                        </div>
+
+
+                    </li>
+
+
+
+
+
+
+                </AuthorizeView>
+                <AuthorizeView Policy="MustBeOperator">
+                    <li class="nav-item px-3 pt-0">
+                        <NavLink class="nav-link" href="addFlights">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Add Flight
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3 pt-0">
+                        <NavLink class="nav-link" href="viewallflights">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Manage Flights
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3 pt-0">
+                        <NavLink class="nav-link">
+                            <a href="login" @onclick="PerformLogout">Log out</a>
+                        </NavLink>
+                    </li>
+                </AuthorizeView>
+            </ul>
+
+        </div>
+    </div>
+
+</nav>
+
+
+
+
+@code {
+    bool collapseNavMenu = true;
+    private string email;
+    private string password;
+    private string error;
+    string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    void CollapseNavMenu()
+    {
+        collapseNavMenu = true;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        error = " ‏‏‎";
+    }
+
+    public async Task PerformLogin()
+    {
+        error = "";
+        try
+        {
+            await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).ValidateLogin(email, password);
+            password = "";
+            email = "";
+            NavigationManager.NavigateTo("/flightList");
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+
+    }
+
+    public async Task PerformLogout()
+    {
+        error = "";
+        email = "";
+        password = "";
+        try
+        {
+            bookingService.setWarning(0);
+            bookingService.setDelay(0);
+            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).Logout();
+            NavigationManager.NavigateTo("/Login");
+        }
+        catch (Exception e) { }
+    }
+
+}
+

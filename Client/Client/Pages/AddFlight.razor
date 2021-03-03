@@ -1,0 +1,183 @@
+﻿@page "/addFlights"
+@attribute [Authorize]
+@using Client.Data
+@using Client.Model
+@inject IFlightService flightService
+@inject IAirplaneService airplaneService
+@inject IAirportService airportService
+@inject NavigationManager navigationManager
+@using System.ComponentModel.DataAnnotations;
+
+<EditForm Model="@flightModel" OnValidSubmit="@AddNewFlight">
+    <DataAnnotationsValidator />
+    <div class="section">
+        <div class="section-center">
+            <div class="container d-flex justify-content-center">
+                <div class="row">
+                    <div class="booking-form">
+                        <div class="col-12">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <span class="form-label">Flying from</span>
+                                        <InputSelect class="form-control" placeholder="Flying from" @bind-Value="flightModel.toAirport">
+                                            @if (airports == null)
+                                            {
+                                                <option>No airports in database</option>
+                                            }
+                                            else
+                                            {
+                                                <option default>Choose airport</option>
+                                                @foreach (var item in airports)
+                                                {
+                                                    <option>@item.airportName</option>
+                                                }
+                                            }
+                                        </InputSelect>
+                                        <ValidationMessage For="@(() => flightModel.toAirport)" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <span class="form-label">Flying to</span>
+                                        <InputSelect class="form-control" placeholder="Flying to" @bind-Value="flightModel.fromAirport">
+                                            @if (airports == null)
+                                            {
+                                                <option>No airports in database</option>
+                                            }
+                                            else
+                                            {
+                                                <option default>Choose airport</option>
+                                                @foreach (var item in airports)
+                                                {
+                                                    <option>@item.airportName</option>
+                                                }
+                                            }
+                                        </InputSelect>
+                                        <ValidationMessage For="@(() => flightModel.fromAirport)" />
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <span class="form-label">Departing</span>
+                                        <RadzenDatePicker ShowTime="true" @bind-Value="flightModel.depature.departureTime" class="form-control" DateFormat="yyyy-MM-dd HH:mm:ss" />
+                                        <!--<InputDate class="form-control" type="datetime-local" @bind-Value="@flightModel.depature.departureTime" />-->
+                                        <ValidationMessage For="@(() => flightModel.depature.departureTime)" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <span class="form-label">Returning</span>
+                                        <RadzenDatePicker ShowTime="true" @bind-Value="flightModel.arrival.arrivalTime" class="form-control" DateFormat="yyyy-MM-dd HH:mm:ss" />
+                                        <!--<InputDate class="form-control" type="datetime-local" @bind-Value="@flightModel.arrival.arrivalTime"  />-->
+                                        <ValidationMessage For="@(() => flightModel.arrival.arrivalTime)" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <span class="form-label">Plane</span>
+                                        <InputSelect @bind-Value="flightModel.requestedPlane" class="form-control">
+                                            @if (airplanes == null)
+                                            {
+                                                <option>NoPlanesInDatabase</option>
+                                            }
+                                            else
+                                            {
+                                                <option default>Choose plane</option>
+                                                @foreach (var item in airplanes)
+                                                {
+                                                    <option>@item.planeType</option>
+                                                }
+                                            }
+                                        </InputSelect>
+                                        <ValidationMessage For="@(() => flightModel.requestedPlane)" />
+                                        <span class="select-arrow"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 text-center">
+                                    <div style="color:red" class="font-weight-bold">@errorMessage</div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="row">
+                                <div class="col-md-5 offset-md-3">
+                                    <div class="form-btn">
+                                        <button type="submit" class="submit-btn">Add flight</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+
+@code {
+    private FlightModel flightModel = new FlightModel();
+    private Flight newFlight = new Flight();
+    private Departure newDeparture = new Departure();
+    private Arrival newArrival = new Arrival();
+    private IList<Airplane> airplanes;
+    private IList<Airport> airports;
+    private string errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        flightModel.depature.departureTime = DateTime.Now;
+        flightModel.arrival.arrivalTime = DateTime.Now;
+        airports = await airportService.getAirports();
+        airplanes = await airplaneService.GetFlights();
+        errorMessage = "";
+    }
+    private async Task AddNewFlight()
+    {
+        //Setting from where
+        Airport to = await airportService.getAirportByName(flightModel.fromAirport);
+        newArrival.fromWhere = to.IATACode;
+        newArrival.arrivalTime = flightModel.arrival.arrivalTime;
+
+        //Setting where to
+        Airport from = await airportService.getAirportByName(flightModel.toAirport);
+        newDeparture.fromWhere = from.IATACode;
+        newDeparture.departureTime = flightModel.depature.departureTime;
+
+        //Setting registration nubmer of plane
+        Airplane airplane = await airplaneService.getRegNumByType(flightModel.requestedPlane);
+        newFlight.airplaneRegNum = airplane.registrationNumber.ToString();
+        newFlight.numberOfSeatRemaining = airplane.numberOfSeats;
+
+        Flight test = await flightService.AddFlight(newFlight, newArrival, newDeparture);
+        navigationManager.NavigateTo("/viewallflights");
+    }
+    public class FlightModel
+    {
+        [Required]
+        public string fromAirport { get; set; }
+        [Required]
+        public string toAirport { get; set; }
+        [Required]
+        public Departure depature { get; set; } = new Departure();
+        [Required]
+        public Arrival arrival { get; set; } = new Arrival();
+        [Required]
+        public string requestedPlane { get; set; }
+    }
+}

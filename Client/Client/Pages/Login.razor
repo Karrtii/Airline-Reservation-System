@@ -1,0 +1,129 @@
+﻿@page "/login"
+@namespace LoginComponent
+@using Client.Authentication
+@using Client.Data
+@using System.ComponentModel.DataAnnotations;
+@inject NavigationManager NavigationManager
+@inject IFlightService flightService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IBookingService bookingService
+
+<AuthorizeView>
+    <NotAuthorized Context="anotherContext">
+        <EditForm Model="loginModel" OnValidSubmit="PerformLogin">
+            <DataAnnotationsValidator />
+            <div class="container-fluid d-flex justify-content-center align-items-center vh-100">
+                <div class="row main-content text-center">
+                    <div class="col-md-5 text-center company__info">
+
+                        <img src="/css/Assets/login_image.jpg" asp-append-version="true" height="300" />
+                    </div>
+                    <div class="col-md-7  col-12 login_form ">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <h2>Log In</h2>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-8" style="padding-left:0px !important;">
+                                            <InputText type="text" name="username" id="username" class="form__input" placeholder="Email" @bind-Value="loginModel.email" />
+                                            <ValidationMessage For="@(() => loginModel.email)" />
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8" style="padding-left:0px !important;">
+                                            <InputText type="password" name="password" id="password" class="form__input" placeholder="Password" @bind-Value="loginModel.password" />
+                                            <ValidationMessage For="@(() => loginModel.password)" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <button value="Submit" type="submit" class="btn btn-primary btn-rounded">Submit</button>
+                                    </div>
+                                    <div class="row text-center">
+                                        <div style="color:red" class="font-weight-bold py-3 m-auto">@error</div>
+                                    </div>
+
+
+                                </div>
+                                <div class="row ">
+                                    <p style="padding-left:14px;">Don't have an account? <a href="register">Register Here</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+    </NotAuthorized>
+    <Authorized>
+        <div class="container-fluid d-flex justify-content-center align-items-center vh-100">
+            <div class="row main-content text-center d-flex justify-content-center">
+                <div class="col-md-6">
+                    <div class="booking-form">
+                        <div class="form-btn mt-0">
+                            <button class="submit-btn" @onclick="PerformLogout">Log out</button>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </Authorized>
+</AuthorizeView>
+@code {
+    private LoginModel loginModel = new LoginModel();
+    private string error;
+
+    protected async override Task OnInitializedAsync()
+    {
+        error = "‏‏‎";
+        await flightService.CheckFlights();
+    }
+    public async Task PerformLogin()
+    {
+
+        try
+        {
+            await Authenticate();
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+
+    }
+    private async Task Authenticate()
+    {
+        error = "";
+        await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).ValidateLogin(loginModel.email, loginModel.password);
+        bookingService.setUsername(loginModel.email);
+        if(((CustomAuthenticationStateProvider)AuthenticationStateProvider).cachedUser.userType.Equals("customer"))
+        {
+            NavigationManager.NavigateTo("/searchflight");
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/addflights");
+        }
+
+    }
+    public void PerformLogout()
+    {
+        error = "";
+        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).Logout();
+        NavigationManager.NavigateTo("/Login");
+    }
+    public class LoginModel
+    {
+        [Required(ErrorMessage = "Please enter your email")]
+        [EmailAddress(ErrorMessage = "Please enter your email adress in format: yourname@example.com")]
+        public string email { get; set; }
+        [Required(ErrorMessage = "Please enter your password")]
+        public string password { get; set; }
+    }
+}

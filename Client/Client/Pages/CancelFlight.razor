@@ -1,0 +1,44 @@
+﻿@page "/cancelFlight"
+@using Client.Data
+@inject NavigationManager navigationManager
+@inject IFlightService flightService
+@using Microsoft.AspNetCore.WebUtilities @*for QueryHelpers*@
+
+<div class="section">
+    <div class="section-center">
+        <div class="container justify-content-center d-flex ">
+            <div class="row text-center confirm-container p-5">
+                <h2 class="mb-5 text-white">Are you sure you want to delete this flight?</h2>
+                <div class="col-12 d-flex justify-content-around">
+                    <button class="yellow-btn cancel" @onclick="goBack">Cancel</button>
+                    <button class="yellow-btn" @onclick="CancelFlightFunctionality">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int id;
+
+    protected override void OnInitialized()
+    {
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("ID", out var flightid))
+        {
+            this.id = Convert.ToInt32(flightid.First());
+        }
+    }
+
+    private async Task CancelFlightFunctionality()
+    {
+        await flightService.SetFlightStatus("cancelled", id);
+        navigationManager.NavigateTo("/viewallflights");
+    }
+
+    private void goBack()
+    {
+        navigationManager.NavigateTo("/viewallflights");
+    }
+}

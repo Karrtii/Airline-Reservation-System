@@ -1,0 +1,143 @@
+﻿@page "/register"
+@using Client.Model
+@using Client.Data
+@using System.Text.Json
+@inject IUserService userService
+@inject NavigationManager navigationManager
+
+<EditForm Model="@newUser" OnValidSubmit="@RegisterUser">
+    <DataAnnotationsValidator />
+
+    <body>
+
+        <div class="section" style="margin-top:120px;">
+            <div class="section-center">
+
+                <div class="justify-content-center container d-flex">
+                    <div class="row">
+                        <div class="booking-form justify-content-center">
+                            <div class="row">
+                                <div class="col-12 my-3">
+                                    <p style="color:white; padding-left:25px; font-size:2rem;">
+                                        Sign up here
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row">
+
+                                    <div class=" col-md-6 mx-auto">
+                                        <div class="form-group">
+                                            <span class="form-label">First name</span>
+                                            <InputText class="form-control" type="text" placeholder="First name" @bind-Value="newUser.firstName" />
+                                            <ValidationMessage For="@(() => newUser.firstName)" />
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class=" col-md-6 ">
+                                        <div class="form-group">
+                                            <span class="form-label">Last name</span>
+                                            <InputText class="form-control" type="text" placeholder="Last name" @bind-Value="newUser.lastName" />
+                                            <ValidationMessage For="@(() => newUser.lastName)" />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class=" col-md-12">
+                                        <div class="form-group">
+                                            <span class="form-label">Phone number</span>
+                                            <InputNumber class="form-control" placeholder="Phone number" @bind-Value="newUser.phoneNumber" />
+                                            <ValidationMessage For="@(() => newUser.phoneNumber)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 mx-auto">
+                                        <div class="form-group">
+                                            <span class="form-label" style="margin-bottom:10px;">Birthdate</span>
+                                            <InputDate class="form-control" type="date" placeholder="Birthdate" @bind-Value="newUser.dateOfBirth" />
+                                            <ValidationMessage For="@(() => newUser.dateOfBirth)" />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row">
+                                    <div class="col-md-12 mx-auto">
+                                        <div class="form-group">
+                                            <span class="form-label">Email</span>
+                                            <InputText type="text" class="form-control" placeholder="Email" @bind-Value="newUser.email" />
+                                            <ValidationMessage For="@(() => newUser.email)" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12  mx-auto">
+                                        <div class="form-group">
+                                            <span class="form-label">Password</span>
+                                            <InputText class="form-control" type="password" placeholder="Password" @bind-Value="newUser.password" />
+                                            <ValidationMessage For="@(() => newUser.password)" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row text-center">
+                                    <div style="color:red" class="font-weight-bold py-3 m-auto">@errorMessage</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class=" col-md-12 mx-auto">
+                                        <button class="submit-btn" type="submit">Register</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </body>
+</EditForm>
+
+@code {
+    private User newUser = new User();
+    private string errorMessage;
+
+    protected override void OnInitialized()
+    {
+        errorMessage = "‏‏‎";
+    }
+
+    private async Task RegisterUser()
+    {
+        try
+        {
+            await AddNewUser();
+        }
+        catch (JsonException e)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+    }
+
+    private async Task AddNewUser()
+    {
+        newUser.userType = "customer";
+        User example = await userService.RegisterUser(newUser);
+        navigationManager.NavigateTo("/login");
+    }
+}
