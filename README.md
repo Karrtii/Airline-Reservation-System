@@ -41,6 +41,6 @@ The communication between the presentation and application tiers is webservices 
 
 The diagram below shows the package diagram for the airline reservation system.
 
-![image](https://user-images.githubusercontent.com/71009398/109883973-825f3a80-7c7c-11eb-9f30-ce97932fbdc0.png)
+![image](https://user-images.githubusercontent.com/71009398/109884283-ff8aaf80-7c7c-11eb-88aa-697a63488896.png)
 
 Further in-depth documentation of the airline reservation system can be found under the _Documentation_ folder.
