@@ -1,6 +1,8 @@
 # Airline-Reservation-System
 This is a distributed and heterogeneous system where customers can reserve airplane tickets, and operators can manage the system.
 
+_In-depth documentation of the airline reservation system can be found under the Documentation folder._
+
 **About the airline reservation system**
 
 Customers can search for available flights depending on their departing and arriving cities, and the departure date.
@@ -43,4 +45,15 @@ The diagram below shows the package diagram for the airline reservation system.
 
 ![image](https://user-images.githubusercontent.com/71009398/109884283-ff8aaf80-7c7c-11eb-88aa-697a63488896.png)
 
-Further in-depth documentation of the airline reservation system can be found under the _Documentation_ folder.
+Further 
+
+**Testing of the system**
+
+Two notable types of testing were conducted on the system, integration testing and usability testing.
+
+The type of integration testing done is the Big-Bang integration testing, where the testing only took place after the development of all the components.
+
+Usability testing is concerned with the intuitiveness of the system, testing on users who had no prior experience with the system.
+
+_Further in-depth documentation of the airline reservation system can be found under the Documentation folder._
+
